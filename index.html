@@ -1019,139 +1019,255 @@
         const pb = new PocketBase('https://pbdb2.duckdns.org');
         let donors = [];
 
+        // ==========================================
+        // LANGUAGE TRANSLATION ENGINE & DICTIONARY
+        // ==========================================
+        let currentLang = localStorage.getItem('lang') || 'bn';
+
+        const translations = {
+            bn: {
+                'nav-subtitle': 'শহীদ রফিক-জব্বার হল ইউনিট',
+                'nav-home': 'হোম',
+                'nav-directory': 'রক্তদাতা তালিকা',
+                'nav-committee': 'কমিটি',
+                'nav-reports': 'রিপোর্টস',
+                'nav-update-btn': 'তথ্য আপডেট করুন',
+                'nav-update-btn-mob': 'আপডেট',
+                'metric-students': 'মোট শিক্ষার্থী সংখ্যা',
+                'metric-willing': 'রক্ত দিতে আগ্রহী',
+                'search-widget-title': 'রক্তের গ্রুপ সার্চ (Quick Search)',
+                'bg-all': 'সকল গ্রুপের রক্তদাতা',
+                'search-btn-text': 'খুঁজুন',
+                'purpose-badge': 'আমাদের উদ্দেশ্য',
+                'purpose-title': 'কেন এই প্ল্যাটফর্ম?',
+                'purpose-p1': 'রাত ২টায় ফোন আসলো — রক্ত লাগবে, জরুরি। এই মুহূর্তে কার কাছে যাবেন? কোন গ্রুপের রক্ত কার কাছে পাওয়া যাবে? এই প্ল্যাটফর্মটা ঠিক সেই জায়গাটাই সহজ করে দিতে চায়। শহীদ রফিক-জব্বার হলের ছেলেদের রক্তের গ্রুপ, ফোন নম্বর আর ওজনের তথ্য এক জায়গায় থাকলে — দরকারের সময় আর হাতড়াতে হবে না।',
+                'purpose-cta': 'হলের <span class="text-[#E52229] font-bold">সকল আবাসিক শিক্ষার্থীকে</span> অনুরোধ — রক্ত দিতে চান বা না চান, শুধু আপনার তথ্যটুকু (রক্তের গ্রুপ, মোবাইল নম্বর, ওজন) এখানে আপডেট করে রাখুন।',
+                'purpose-subcta': 'ভাবুন তো — কাল যদি আপনারই কোনো বন্ধুর রক্ত দরকার হয়, তখন দ্রুত খুঁজে পাওয়া যায় এমন একটা লিস্ট থাকলে কতটা সহজ হতো। আপনার তথ্য আপডেট থাকা মানেই কারো জরুরি মুহূর্তে আপনি পাশে আছেন।',
+                'purpose-update-btn': 'এখনই আমার তথ্য আপডেট করুন',
+                'motivation-badge': 'রক্তদান নিয়ে কিছু কথা',
+                'motivation-title': 'ভয় পাওয়ার কিছু নেই — আগে জানুন, তারপর ভাবুন',
+                'motivation-p1': '"রক্ত দিলে শরীর দুর্বল হয়ে যায়" — এটা একটা ভুল ধারণা। বাস্তবে রক্তদান পুরোপুরি নিরাপদ, ১৫-২০ মিনিটের ব্যাপার, আর শরীরের জন্য বরং উপকারী।',
+                'motivation-weight-title': 'মাত্র ৫০ কেজি ওজন হলেই রক্ত দেওয়া যায়!',
+                'motivation-weight-desc': 'বয়স ১৮–৬০ বছরের মধ্যে এবং সুস্থ থাকলেই যথেষ্ট।',
+                'motivation-benefits-title': 'রক্তদানের উপকারিতা',
+                'motivation-benefit1': '<span class="font-semibold">হার্ট ভালো থাকে</span> — রক্ত দিলে শরীরে অতিরিক্ত আয়রন জমে না, হার্ট অ্যাটাকের ঝুঁকি কমে যায়।',
+                'motivation-benefit2': '<span class="font-semibold">ফ্রি হেলথ চেকআপ</span> — রক্ত দেওয়ার আগে ব্লাড গ্রুপ, হিমোগ্লোবিন, প্রেশার সব চেক করে নেওয়া হয়, একদম বিনামূল্যে।',
+                'motivation-benefit3': '<span class="font-semibold">শরীর নিজেই পুরণ করে নেয়</span> — রক্ত দেওয়ার ৪৮ ঘণ্টার মধ্যেই শরীর নতুন রক্ত বানানো শুরু করে দেয়। বরং একটু ফ্রেশ লাগে!',
+                'motivation-benefit4': '<span class="font-semibold">একবার দিলে তিনজনের উপকার</span> — আপনার একবার রক্ত দেওয়া থেকে তিনটা আলাদা উপাদান বের করা যায়, যেগুলো তিনজন আলাদা রোগীর কাজে লাগে।',
+                'contact-prompt-title': 'কিছু জানার থাকলে জিজ্ঞেস করুন!',
+                'contact-prompt-desc': 'রক্ত দেওয়া নিয়ে কোনো ভয় বা প্রশ্ন থাকলে কমিটির যেকোনো ভাইয়ের সাথে কথা বলুন। সব রকম সাহায্য করার জন্য আমরা আছি।',
+                'contact-prompt-btn': 'কমিটি দেখুন',
+                'directory-title': 'রক্তদাতা তালিকা',
+                'directory-search-placeholder': 'নাম বা রুম নম্বর দিয়ে খুঁজুন...',
+                'directory-bg-all': 'সব রক্তের গ্রুপ',
+                'directory-eligible-only': 'শুধুমাত্র রক্তদানে প্রস্তুত (Eligible Donors Only)',
+                'directory-empty-state': 'দুঃখিত, কোনো মিল খুঁজে পাওয়া যায়নি।',
+                'committee-title': 'নির্বাহী পর্ষদ',
+                'reports-title': 'কোষাধ্যক্ষের আয়-ব্যয় রিপোর্ট',
+                'reports-subtitle': 'হল ইউনিটের মে ২০২৬ থেকে শুরু হওয়া আয় ও ব্যয়ের মাসভিত্তিক লেজার হিসাব',
+                'reports-manage-btn': 'হিসাব পরিচালনা',
+                'reports-yearly-title': 'বাৎসরিক হিসাব বিবরণী (Annual Reports)',
+                'reports-yearly-subtitle': 'পুরো বছরের আয় ও ব্যয়ের সংকলিত বাৎসরিক রিপোর্ট',
+                'footer-title': 'বাঁধন, শহীদ রফিক-জব্বার হল ইউনিট',
+                'footer-addr': 'জাহাঙ্গীরনগর বিশ্ববিদ্যালয়, সাভার, ঢাকা।',
+                
+                // Modals
+                'modal-detail-title': 'রক্তদাতার বিবরণ',
+                'label-room': 'রুম নম্বর',
+                'label-weight': 'ওজন (কেজি)',
+                'label-last-donation': 'লাস্ট রক্তদান',
+                'label-total-donations': 'মোট রক্তদান',
+                'btn-call': 'কল দিন',
+                'btn-edit': 'এডিট করুন',
+                'modal-edit-title': 'তথ্য পরিবর্তন করুন',
+                'modal-edit-warning': '⚠️ নিরাপত্তা স্বার্থে <span class="font-bold text-slate-700">নাম, রক্তের গ্রুপ, রোল</span> এবং <span class="font-bold text-slate-700">রেজিস্ট্রেশন নম্বর</span> পরিবর্তন করা যাবে না। ভুল তথ্য দিয়ে থাকলে অ্যাডমিনের সাথে যোগাযোগ করুন।',
+                'label-donor-name': 'রক্তদাতার নাম',
+                'label-blood-group': 'রক্তের গ্রুপ',
+                'label-batch': 'ব্যাচ*',
+                'label-dept': 'বিভাগ*',
+                'label-phone': 'মোবাইল নম্বর*',
+                'label-total-donations-edit': 'মোট রক্তদান (বার)*',
+                'label-last-donation-edit': 'সর্বশেষ রক্তদান',
+                'label-willing': 'রক্ত দিতে ইচ্ছুক?*',
+                'willing-yes': 'হ্যাঁ, আমি আগ্রহী',
+                'willing-no': 'না, ইচ্ছুক না',
+                'label-weight-edit': 'ওজন (কেজি)*',
+                'label-photo-edit': 'প্রোফাইল ছবি পরিবর্তন',
+                'label-optional': '(ঐচ্ছিক)',
+                'verification-title': 'নিরাপত্তা যাচাইকরণ',
+                'label-verify-roll': 'আপনার রোল নম্বর*',
+                'label-verify-reg': 'রেজিস্ট্রেশন নম্বর*',
+                'btn-verify-update': 'যাচাইপূর্বক তথ্য আপডেট করুন 🛡️',
+                
+                'self-title': 'নিজের তথ্য আপডেট প্যানেল',
+                'self-search-info': 'ℹ️ আপনার ব্যাচ এবং রোল নম্বর দিয়ে ডাটাবেসে আপনার প্রাক-সংরক্ষিত তথ্যটি খুঁজে বের করুন।',
+                'btn-search': 'অনুসন্ধান করুন',
+                'self-notfound-title': 'কোনো তথ্য পাওয়া যায়নি!',
+                'self-notfound-desc': 'তথ্য মিলে নাই। শুধুমাত্র শহীদ রফিক জব্বার হলের শিক্ষার্থীদের ডেটা এন্ট্রি হবে। যদি এরপরও মিসটেক মনে হয়, তবে বাঁধন ইউনিট কমিটির সঙ্গে যোগাযোগ করুন।',
+                'btn-search-again': 'আবার অনুসন্ধান করুন 🔄',
+                'self-already-title': 'তথ্য ইতিমধ্যে আপডেট করা হয়েছে!',
+                'self-already-desc': 'আপনার প্রোফাইলটি ইতিমধ্যে সক্রিয় ও আপডেট করা আছে। নতুন করে পুনরায় তথ্য পরিবর্তন করতে চাইলে রক্তদাতা তালিকায় গিয়ে আপনার কার্ডে ক্লিক করে "এডিট করুন" বাটন ব্যবহার করুন।',
+                'btn-go-to-directory': 'রক্তদাতা তালিকায় যান 📋',
+                'btn-search-other': 'অন্য রোল অনুসন্ধান করুন 🔄',
+                'self-edit-info': '✔️ শিক্ষার্থী সনাক্ত করা গেছে। আপনার বিবরণীটি পূরণ করে প্রোফাইলটি সক্রিয় করুন।',
+                'label-name-caps': 'নাম',
+                'label-dept-caps': 'বিভাগ',
+                'select-option': 'নির্বাচন করুন',
+                'label-phone-star': 'মোবাইল নম্বর*',
+                'label-photo-self': 'প্রোফাইল ছবি',
+                'label-verify-reg-self': 'আপনার রেজিস্ট্রেশন নম্বর দিন*',
+                'btn-save-activate': 'তথ্য সংরক্ষণ ও সক্রিয় করুন ❤️'
+            },
+            en: {
+                'nav-subtitle': 'Shahid Rafiq Jabbar Hall Unit',
+                'nav-home': 'Home',
+                'nav-directory': 'Donors List',
+                'nav-committee': 'Committee',
+                'nav-reports': 'Reports',
+                'nav-update-btn': 'Update Info',
+                'nav-update-btn-mob': 'Update',
+                'metric-students': 'Total Students',
+                'metric-willing': 'Willing Donors',
+                'search-widget-title': 'Blood Group Search (Quick Search)',
+                'bg-all': 'All Blood Groups',
+                'search-btn-text': 'Search',
+                'purpose-badge': 'Our Purpose',
+                'purpose-title': 'Why This Platform?',
+                'purpose-p1': 'A call came at 2 AM — blood needed, urgent. Whom to contact at this moment? Where to find which blood group? This platform aims to solve exactly this. Having blood groups, phone numbers, and weights of Shahid Rafiq-Jabbar Hall students in one place ensures no one has to struggle during emergencies.',
+                'purpose-cta': 'Request to <span class="text-[#E52229] font-bold">all resident students</span> — whether you want to donate blood or not, please just update your information (blood group, mobile number, weight) here.',
+                'purpose-subcta': 'Think about it — if a friend of yours needs blood tomorrow, how easy it would be to have a list where they can be found quickly. Keeping your info updated means you are ready to help in someone's critical moment.',
+                'purpose-update-btn': 'Update My Info Now',
+                'motivation-badge': 'About Blood Donation',
+                'motivation-title': 'Nothing to fear — know first, think later',
+                'motivation-p1': '"Donating blood makes you weak" — this is a misconception. In reality, blood donation is completely safe, takes 15-20 minutes, and is actually beneficial for the body.',
+                'motivation-weight-title': 'You can donate blood with just 50 kg weight!',
+                'motivation-weight-desc': 'Being healthy and aged between 18–60 years is enough.',
+                'motivation-benefits-title': 'Benefits of Blood Donation',
+                'motivation-benefit1': '<span class="font-semibold">Healthy Heart</span> — Donating blood prevents excess iron accumulation in the body, reducing the risk of heart attacks.',
+                'motivation-benefit2': '<span class="font-semibold">Free Health Checkup</span> — Blood group, hemoglobin, and blood pressure are checked before donation, completely free.',
+                'motivation-benefit3': '<span class="font-semibold">Body Replenishes Itself</span> — Within 48 hours of donation, the body starts producing new blood. It actually makes you feel fresher!',
+                'motivation-benefit4': '<span class="font-semibold">One Donation Helps Three</span> — Three different components can be extracted from your single donation, helping three different patients.',
+                'contact-prompt-title': 'Ask if you want to know anything!',
+                'contact-prompt-desc': 'If you have any fear or questions regarding blood donation, feel free to talk to any committee member. We are here to help.',
+                'contact-prompt-btn': 'View Committee',
+                'directory-title': 'Donor Directory',
+                'directory-search-placeholder': 'Search by name or room...',
+                'directory-bg-all': 'All Blood Groups',
+                'directory-eligible-only': 'Eligible Donors Only',
+                'directory-empty-state': 'Sorry, no matches found.',
+                'committee-title': 'Executive Committee',
+                'reports-title': 'Treasurer's Reports',
+                'reports-subtitle': 'Month-wise ledger statement starting from May 2026',
+                'reports-manage-btn': 'Manage Ledger',
+                'reports-yearly-title': 'Annual Reports',
+                'reports-yearly-subtitle': 'Compiled annual income and expense report',
+                'footer-title': 'Badhan, Shahid Rafiq-Jabbar Hall Unit',
+                'footer-addr': 'Jahangirnagar University, Savar, Dhaka.',
+                
+                // Modals
+                'modal-detail-title': 'Donor Details',
+                'label-room': 'Room Number',
+                'label-weight': 'Weight (kg)',
+                'label-last-donation': 'Last Donation',
+                'label-total-donations': 'Total Donations',
+                'btn-call': 'Call',
+                'btn-edit': 'Edit Info',
+                'modal-edit-title': 'Edit Information',
+                'modal-edit-warning': '⚠️ For security reasons, <span class="font-bold text-slate-700">Name, Blood Group, Roll</span>, and <span class="font-bold text-slate-700">Registration Number</span> cannot be changed. Contact admin for corrections.',
+                'label-donor-name': 'Donor Name',
+                'label-blood-group': 'Blood Group',
+                'label-batch': 'Batch*',
+                'label-dept': 'Department*',
+                'label-phone': 'Mobile Number*',
+                'label-total-donations-edit': 'Total Donations (times)*',
+                'label-last-donation-edit': 'Last Donation Date',
+                'label-willing': 'Willing to Donate?*',
+                'willing-yes': 'Yes, I am willing',
+                'willing-no': 'No, not now',
+                'label-weight-edit': 'Weight (kg)*',
+                'label-photo-edit': 'Change Profile Picture',
+                'label-optional': '(Optional)',
+                'verification-title': 'Security Verification',
+                'label-verify-roll': 'Enter your Roll*',
+                'label-verify-reg': 'Registration Number*',
+                'btn-verify-update': 'Verify and Update Information 🛡️',
+                
+                'self-title': 'Self-Update Panel',
+                'self-search-info': 'ℹ️ Find your pre-registered record using Batch and Roll.',
+                'btn-search': 'Search',
+                'self-notfound-title': 'No Information Found!',
+                'self-notfound-desc': 'No record matches. Only students of Shahid Rafiq Jabbar Hall can register. If you believe this is an error, contact the committee.',
+                'btn-search-again': 'Search Again 🔄',
+                'self-already-title': 'Profile Already Updated!',
+                'self-already-desc': 'Your profile is already active. To change details, find your card in the Directory and click the "Edit Info" button.',
+                'btn-go-to-directory': 'Go to Directory 📋',
+                'btn-search-other': 'Search Another Roll 🔄',
+                'self-edit-info': '✔️ Student identified. Complete details to activate your profile.',
+                'label-name-caps': 'Name',
+                'label-dept-caps': 'Department',
+                'select-option': 'Select Option',
+                'label-phone-star': 'Mobile Number*',
+                'label-photo-self': 'Profile Photo',
+                'label-verify-reg-self': 'Enter your Registration Number*',
+                'btn-save-activate': 'Save and Activate Profile ❤️'
+            }
+        };
+
+        function applyTranslations() {
+            const lang = currentLang;
+            document.documentElement.setAttribute('lang', lang);
+            
+            // Text contents
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Placeholders
+            const placeholders = document.querySelectorAll('[data-translate-placeholder]');
+            placeholders.forEach(el => {
+                const key = el.getAttribute('data-translate-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // Title
+            document.title = lang === 'bn' ? 'বাঁধন, শহীদ রফিক-জব্বার হল ইউনিট' : 'Badhan, Shahid Rafiq-Jabbar Hall Unit';
+
+            // Language Toggle Button Text
+            const langBtn = document.getElementById('lang-toggle-btn');
+            if (langBtn) {
+                langBtn.innerText = lang === 'bn' ? 'EN' : 'BN';
+            }
+
+            // Re-render dynamic grids
+            filterDonors();
+            renderCommittee();
+            renderTreasurerReports();
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'bn' ? 'en' : 'bn';
+            localStorage.setItem('lang', currentLang);
+            applyTranslations();
+        }
+
+        // ==========================================
+        // COMMITTEE DEFINITIONS (Dynamically Loaded)
+        // ==========================================
+        const committeeBengaliNames = {
+            "735": "সাব্বির আহমেদ",
+            "739": "প্রতাপ হালদার",
+            "506": "মোঃ সৌরভ ইসলাম",
+            "514": "আব্দুর রহমান",
+            "944": "আতিক হাসান"
+        };
+
         const committeeMembers = [
-            { 
-                designation: "জোনাল প্রতিনিধি", 
-                designationEn: "Zonal Representative",
-                name: "Al Ehsan Spondon", 
-                nameBn: "আল এহসান স্পন্দন", 
-                batch: "50", 
-                dept: "সরকার ও রাজনীতি",
-                phone: "01902399897", 
-                bloodGroup: "O+", 
-                avatarText: "AS" 
-            },
-            { 
-                designation: "সভাপতি", 
-                designationEn: "President",
-                name: "Bhuiyan Md. Zahid Chami", 
-                nameBn: "ভূঁঞা মোঃ জাহিদ চামী", 
-                batch: "51", 
-                dept: "ইংরেজি",
-                phone: "01888927331", 
-                bloodGroup: "A+", 
-                avatarText: "ZC" 
-            },
-            { 
-                designation: "সহ-সভাপতি", 
-                designationEn: "Vice President",
-                name: "Tawhidul Islam Madhu", 
-                nameBn: "তাওহীদুল ইসলাম মাধু", 
-                batch: "51", 
-                dept: "ইংরেজি",
-                phone: "01300890530", 
-                bloodGroup: "B+", 
-                avatarText: "TM" 
-            },
-            { 
-                designation: "সহ-সভাপতি", 
-                designationEn: "Vice President",
-                name: "Sheikh Farid", 
-                nameBn: "শেখ ফরিদ", 
-                batch: "52", 
-                dept: "দর্শন",
-                phone: "01741997644", 
-                bloodGroup: "A+", 
-                avatarText: "SF" 
-            },
-            { 
-                designation: "সাধারণ সম্পাদক", 
-                designationEn: "General Secretary",
-                name: "Mahir Faysal", 
-                nameBn: "মাহীর ফয়সাল", 
-                batch: "53", 
-                dept: "লোকপ্রশাসন",
-                phone: "01945696733", 
-                bloodGroup: "B+", 
-                avatarText: "MF" 
-            },
-            { 
-                designation: "সহ-সাধারণ সম্পাদক", 
-                designationEn: "Assistant General Secretary",
-                name: "Md. Swadhin Hossain", 
-                nameBn: "মোঃ স্বাধীন হোসেন", 
-                batch: "53", 
-                dept: "তুলনামূলক সাহিত্য",
-                phone: "01639526648", 
-                bloodGroup: "B+", 
-                avatarText: "SH" 
-            },
-            { 
-                designation: "সাংগঠনিক সম্পাদক", 
-                designationEn: "Organizing Secretary",
-                name: "Mahmudul Hasan Ranga", 
-                nameBn: "মাহমুদুল হাসান রাঙ্গা", 
-                batch: "53", 
-                dept: "সাংবাদিকতা",
-                phone: "01834507956", 
-                bloodGroup: "O+", 
-                avatarText: "MR" 
-            },
-            { 
-                designation: "সহ-সাংগঠনিক সম্পাদক", 
-                designationEn: "Assistant Organizing Secretary",
-                name: "Faysal Ahmed", 
-                nameBn: "ফয়সাল আহম্মেদ", 
-                batch: "53", 
-                dept: "তুলনামূলক সাহিত্য",
-                phone: "01796250290", 
-                bloodGroup: "B+", 
-                avatarText: "FA" 
-            },
-            { 
-                designation: "কোষাধ্যক্ষ", 
-                designationEn: "Treasurer",
-                name: "Md. Nur Islam", 
-                nameBn: "মোঃ নূর ইসলাম", 
-                batch: "53", 
-                dept: "তুলনামূলক সাহিত্য",
-                phone: "01825613191", 
-                bloodGroup: "A+", 
-                avatarText: "NI" 
-            },
-            { 
-                designation: "দপ্তর সম্পাদক", 
-                designationEn: "Office Secretary",
-                name: "Shahriar Tanim", 
-                nameBn: "شاہরিয়ার তানিম", 
-                batch: "53", 
-                dept: "গণিত",
-                phone: "01935528429", 
-                bloodGroup: "O+", 
-                avatarText: "ST" 
-            },
-            { 
-                designation: "প্রচার ও প্রকাশনা বিষয়ক সম্পাদক", 
-                designationEn: "Publicity & Publication Secretary",
-                name: "Nafiz Ahmed", 
-                nameBn: "নাফিজ আহমেদ", 
-                batch: "53", 
-                dept: "আন্তর্জাতিক সম্পর্ক",
-                phone: "01950651786", 
-                bloodGroup: "B+", 
-                avatarText: "NA" 
-            },
-            { 
-                designation: "তথ্য ও শিক্ষা বিষয়ক সম্পাদক", 
-                designationEn: "Information & Education Secretary",
-                name: "Enamul Kabir", 
-                nameBn: "এনামুল কবির", 
-                batch: "53", 
-                dept: "উদ্ভিদ বিজ্ঞান",
-                phone: "01742058141", 
-                bloodGroup: "B+", 
-                avatarText: "EK" 
-            },
             { 
                 designation: "নির্বাহী সদস্য", 
                 designationEn: "Executive Member",
@@ -1434,15 +1550,17 @@
                 }
             });
 
-            // Reset navigation tab button designs (Mobile)
+            // Reset navigation tab button designs (Mobile Sub-Nav)
             desktopTabs.forEach(t => {
-                const mobBtn = document.getElementById(`mobile-tab-${t}`);
-                if (t === tabId) {
-                    mobBtn.classList.add('text-[#E52229]');
-                    mobBtn.classList.remove('text-slate-400');
-                } else {
-                    mobBtn.classList.remove('text-[#E52229]');
-                    mobBtn.classList.add('text-slate-400');
+                const mobBtn = document.getElementById(`mobile-subtab-${t}`);
+                if (mobBtn) {
+                    if (t === tabId) {
+                        mobBtn.classList.add('bg-rose-50', 'text-[#E52229]', 'dark:bg-rose-950/20');
+                        mobBtn.classList.remove('text-slate-500', 'dark:text-slate-400');
+                    } else {
+                        mobBtn.classList.remove('bg-rose-50', 'text-[#E52229]', 'dark:bg-rose-950/20');
+                        mobBtn.classList.add('text-slate-500', 'dark:text-slate-400');
+                    }
                 }
             });
 
@@ -1478,16 +1596,63 @@
         }
 
         // ==========================================
-        // UI RENDERING ENGINE
+        // UI RENDERING ENGINE & TRANSLATABLE DYNAMIC CARDS
         // ==========================================
+        function translateNumber(num) {
+            if (currentLang !== 'bn') return num.toString();
+            const find = ['0','1','2','3','4','5','6','7','8','9'];
+            const replace = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+            return num.toString().replace(/[0-9]/g, function(match) {
+                return replace[find.indexOf(match)];
+            });
+        }
+
+        const deptTranslations = {
+            'Public Administration': 'লোকপ্রশাসন',
+            'Geography and Environment': 'ভূগোল ও পরিবেশ',
+            'Philosophy': 'দর্শন'
+        };
+
+        function translateDept(deptName) {
+            if (currentLang === 'bn' && deptTranslations[deptName]) {
+                return deptTranslations[deptName];
+            }
+            return deptName;
+        }
+
+        function formatMonth(monthStr) {
+            const parts = monthStr.split('-');
+            if (parts.length !== 2) return monthStr;
+            const year = parts[0];
+            const month = parts[1];
+            
+            if (currentLang === 'bn') {
+                const monthNames = {
+                    '01': 'জানুয়ারি', '02': 'ফেব্রুয়ারি', '03': 'মার্চ', '04': 'এপ্রিল',
+                    '05': 'মে', '06': 'জুন', '07': 'জুলাই', '08': 'আগস্ট',
+                    '09': 'সেপ্টেম্বর', '10': 'অক্টোবর', '11': 'নভেম্বর', '12': 'ডিসেম্বর'
+                };
+                const bengaliMonth = monthNames[month] || month;
+                return `${bengaliMonth} ${translateNumber(year)}`;
+            } else {
+                const monthNames = {
+                    '01': 'January', '02': 'February', '03': 'March', '04': 'April',
+                    '05': 'May', '06': 'June', '07': 'July', '08': 'August',
+                    '09': 'September', '10': 'October', '11': 'November', '12': 'December'
+                };
+                const englishMonth = monthNames[month] || month;
+                return `${englishMonth} ${year}`;
+            }
+        }
+
         function updateMetrics() {
             const statTotal = document.getElementById('stat-total-students');
             const statWilling = document.getElementById('stat-willing-donors');
             if (statTotal) {
-                statTotal.innerText = donors.length;
+                statTotal.innerText = currentLang === 'bn' ? translateNumber(donors.length) : donors.length;
             }
             if (statWilling) {
-                statWilling.innerText = donors.filter(d => d.willing).length;
+                statWilling.innerText = currentLang === 'bn' ? translateNumber(donors.filter(d => d.willing).length) : donors.filter(d => d.willing).length;
             }
         }
 
@@ -1506,15 +1671,28 @@
             donorList.forEach(donor => {
                 const { eligible, daysRemaining } = checkEligibility(donor.lastDonation);
                 const statusBadge = eligible 
-                    ? `<span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle text-[4px] text-emerald-500"></i> রক্তদানে প্রস্তুত</span>`
-                    : `<span class="inline-flex items-center gap-1 text-[9px] font-semibold text-slate-400 bg-slate-105 px-2 py-0.5 rounded-full">${daysRemaining} দিন বাকি</span>`;
+                    ? `<span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle text-[4px] text-emerald-500"></i> ${currentLang === 'bn' ? 'রক্তদানে প্রস্তুত' : 'Ready to Donate'}</span>`
+                    : `<span class="inline-flex items-center gap-1 text-[9px] font-semibold text-slate-400 bg-slate-105 px-2 py-0.5 rounded-full">${currentLang === 'bn' ? translateNumber(daysRemaining) + ' দিন বাকি' : daysRemaining + ' days left'}</span>`;
 
                 const imageUrl = donor.photo ? `https://pbdb2.duckdns.org/api/files/donors/${donor.id}/${donor.photo}` : null;
                 const avatarHtml = imageUrl 
                     ? `<img src="${imageUrl}" class="w-11 h-11 rounded-xl object-cover border border-slate-100 shrink-0" alt="${donor.name}">`
                     : `<div class="w-11 h-11 rounded-xl bg-slate-50 border border-slate-100 text-slate-500 font-bold text-[11px] flex items-center justify-center shrink-0">${getInitials(donor.name)}</div>`;
 
-                const formattedLastDonation = donor.lastDonation ? donor.lastDonation : "রেকর্ড নেই";
+                const formattedLastDonation = donor.lastDonation 
+                    ? (currentLang === 'bn' ? translateNumber(donor.lastDonation) : donor.lastDonation) 
+                    : (currentLang === 'bn' ? "রেকর্ড নেই" : "No record");
+
+                const roomText = donor.room 
+                    ? ((currentLang === 'bn' ? 'রুম: ' : 'Room: ') + translateNumber(donor.room) + ' • ') 
+                    : '';
+                const batchLabel = currentLang === 'bn' ? `${translateNumber(donor.session)}তম ব্যাচ` : `${donor.session}th Batch`;
+                const totalDonationsLabel = currentLang === 'bn' 
+                    ? `মোট দান: <span class="font-bold text-slate-700">${translateNumber(donor.donorCount)} বার</span>` 
+                    : `Total Donated: <span class="font-bold text-slate-700">${donor.donorCount} times</span>`;
+                const lastDonationLabel = currentLang === 'bn'
+                    ? `শেষ দান: <span class="font-bold text-slate-700">${formattedLastDonation}</span>`
+                    : `Last Donate: <span class="font-bold text-slate-700">${formattedLastDonation}</span>`;
 
                 const card = document.createElement('div');
                 card.onclick = (e) => {
@@ -1531,19 +1709,19 @@
                                 <span class="bg-rose-50 text-[#E52229] font-bold text-[9px] px-1.5 py-0.5 rounded border border-rose-100/40 shrink-0">${donor.bloodGroup}</span>
                             </div>
                             <div class="text-[9px] text-slate-400 font-semibold mt-0.5 truncate">
-                                ${donor.room ? 'রুম: ' + donor.room + ' • ' : ''}${donor.department} (${donor.session})
+                                ${roomText}${translateDept(donor.department)} (${batchLabel})
                             </div>
                             <div class="text-[9px] text-slate-500 font-semibold mt-1">
                                 <i class="fa-solid fa-phone text-[#E52229] text-[8px] mr-0.5"></i> ${donor.phone}
                             </div>
                             <div class="text-[9px] text-slate-400 font-medium mt-0.5">
-                                মোট দান: <span class="font-bold text-slate-700">${donor.donorCount} বার</span> • শেষ দান: <span class="font-bold text-slate-700">${formattedLastDonation}</span>
+                                ${totalDonationsLabel} • ${lastDonationLabel}
                             </div>
                             <div class="mt-1">${statusBadge}</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0 call-btn-prevent">
-                        <a href="tel:${donor.phone}" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-[#E52229] text-[#E52229] hover:text-white flex items-center justify-center border border-rose-100/50 transition" title="কল দিন">
+                        <a href="tel:${donor.phone}" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-[#E52229] text-[#E52229] hover:text-white flex items-center justify-center border border-rose-100/50 transition" title="${currentLang === 'bn' ? 'কল দিন' : 'Call'}">
                             <i class="fa-solid fa-phone text-xs"></i>
                         </a>
                         <div class="text-slate-300 group-hover:text-rose-500 transition">
@@ -1590,28 +1768,12 @@
             if (!grid) return;
             grid.innerHTML = '';
 
-            const coreOfficers = [];
-            const secretariat = [];
-            const executiveMembers = [];
-
-            committeeMembers.forEach(member => {
-                const des = member.designation;
-                if (des === "জোনাল প্রতিনিধি" || des === "সভাপতি" || des === "সহ-সভাপতি" || 
-                    des === "সাধারণ সম্পাদক" || des === "সহ-সাধারণ সম্পাদক" || 
-                    des === "সাংগঠনিক সম্পাদক" || des === "সহ-সাংগঠনিক সম্পাদক" || 
-                    des === "কোষাধ্যক্ষ") {
-                    coreOfficers.push(member);
-                } else if (des === "দপ্তর সম্পাদক" || des === "প্রচার ও প্রকাশনা বিষয়ক সম্পাদক" || des === "তথ্য ও শিক্ষা বিষয়ক সম্পাদক") {
-                    secretariat.push(member);
-                } else {
-                    executiveMembers.push(member);
-                }
-            });
-
             const groups = [
-                { title: "মূল কর্মকর্তা (Core Officers)", list: coreOfficers, icon: "fa-solid fa-crown text-[#E52229]" },
-                { title: "সম্পাদকীয় পর্ষদ (Secretariat)", list: secretariat, icon: "fa-solid fa-feather-pointed text-[#E52229]" },
-                { title: "কার্যনির্বাহী সদস্য (Executive Members)", list: executiveMembers, icon: "fa-solid fa-users text-[#E52229]" }
+                { 
+                    title: currentLang === 'bn' ? "নির্বাহী পর্ষদ" : "Executive Committee", 
+                    list: committeeMembers, 
+                    icon: "fa-solid fa-hand-holding-heart text-[#E52229]" 
+                }
             ];
 
             groups.forEach(group => {
@@ -1641,26 +1803,23 @@
 
                     // Determine details to display
                     const isMatched = !!dbDonor;
-                    const finalNameBn = member.nameBn;
                     const finalNameEn = isMatched ? dbDonor.name : member.name;
+                    const finalNameBn = committeeBengaliNames[member.roll] || member.nameBn;
+                    const finalName = currentLang === 'bn' ? finalNameBn : finalNameEn;
+
                     const finalDept = isMatched ? dbDonor.department : member.dept;
+                    const translatedDept = translateDept(finalDept);
+
                     const finalBatch = isMatched ? dbDonor.session : member.batch;
                     const finalPhone = isMatched ? dbDonor.phone : member.phone;
                     const finalBlood = isMatched ? dbDonor.bloodGroup : member.bloodGroup;
                     const photo = isMatched ? dbDonor.photo : null;
                     const finalRoom = isMatched ? dbDonor.room : null;
-                    const finalWeight = isMatched ? dbDonor.weight : null;
                     const finalDonations = isMatched ? dbDonor.donorCount : 0;
 
                     // Badges colors depending on designation
-                    let badgeColors = "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-350 border border-slate-200/50 dark:border-slate-700/50";
-                    if (member.designation === "সভাপতি" || member.designation === "সাধারণ সম্পাদক" || member.designation === "জোনাল প্রতিনিধি") {
-                        badgeColors = "bg-[#E52229] text-white";
-                    } else if (member.designation === "সহ-সভাপতি" || member.designation === "সহ-সাধারণ সম্পাদক" || member.designation === "সাংগঠনিক সম্পাদক" || member.designation === "সহ-সাংগঠনিক সম্পাদক" || member.designation === "কোষাধ্যক্ষ") {
-                        badgeColors = "bg-rose-50 text-[#E52229] border border-rose-100/50 dark:bg-rose-950/20 dark:text-rose-400 dark:border-rose-900/30";
-                    } else if (member.designation.includes("সম্পাদক")) {
-                        badgeColors = "bg-emerald-50 text-emerald-700 border border-emerald-100/50 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30";
-                    }
+                    let badgeColors = "bg-rose-50 text-[#E52229] border border-rose-100/50 dark:bg-rose-950/20 dark:text-rose-400 dark:border-rose-900/30";
+                    const designationText = currentLang === 'bn' ? member.designation : (member.designationEn || "Executive Member");
 
                     // Avatar HTML
                     let avatarHtml = '';
@@ -1672,26 +1831,31 @@
                     }
 
                     // Verified Checkmark
+                    const verifiedTitle = currentLang === 'bn' ? "সক্রিয় রক্তদাতা (ডাটাবেস ভেরিফাইড)" : "Active Donor (Database Verified)";
                     const verifiedBadge = isMatched 
-                        ? `<i class="fa-solid fa-circle-check text-emerald-500 text-[10px]" title="সক্রিয় রক্তদাতা (ডাটাবেস ভেরিফাইড)"></i>`
+                        ? `<i class="fa-solid fa-circle-check text-emerald-500 text-[10px]" title="${verifiedTitle}"></i>`
                         : ``;
 
                     // Extra live details from database
                     let dbInfoHtml = '';
                     if (isMatched) {
+                        const roomLabel = currentLang === 'bn' ? `রুম: ${translateNumber(finalRoom)}` : `Room: ${finalRoom}`;
+                        const donationsLabel = currentLang === 'bn' ? `রক্তদান: ${translateNumber(finalDonations)} বার` : `Donated: ${finalDonations} times`;
                         dbInfoHtml = `
                             <div class="flex items-center gap-2 flex-wrap mt-2 text-[9px] font-semibold text-slate-500 dark:text-slate-400">
-                                ${finalRoom ? `<span><i class="fa-solid fa-door-open text-rose-500/70 mr-0.5"></i> রুম: ${finalRoom}</span>` : ''}
-                                <span><i class="fa-solid fa-tint text-rose-500/70 mr-0.5"></i> রক্তদান: ${finalDonations} বার</span>
+                                ${finalRoom ? `<span><i class="fa-solid fa-door-open text-rose-500/70 mr-0.5"></i> ${roomLabel}</span>` : ''}
+                                <span><i class="fa-solid fa-tint text-rose-500/70 mr-0.5"></i> ${donationsLabel}</span>
                             </div>
                         `;
                     } else {
                         dbInfoHtml = `
                             <div class="flex items-center gap-2 mt-2 text-[9px] font-medium text-slate-400 dark:text-slate-600">
-                                <span><i class="fa-solid fa-circle-notch animate-spin mr-0.5"></i> অফলাইন প্রোফাইল</span>
+                                <span><i class="fa-solid fa-circle-notch animate-spin mr-0.5"></i> ${currentLang === 'bn' ? 'অফলাইন প্রোফাইল' : 'Offline Profile'}</span>
                             </div>
                         `;
                     }
+
+                    const batchText = currentLang === 'bn' ? `${translateNumber(finalBatch)}তম ব্যাচ` : `${finalBatch}th Batch`;
 
                     // Create Card
                     const card = document.createElement('div');
@@ -1732,14 +1896,14 @@
                             <div class="min-w-0 flex-grow pr-2">
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="text-[7.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded ${badgeColors}">
-                                        ${member.designation}
+                                        ${designationText}
                                     </span>
                                     <span class="bg-rose-50 dark:bg-rose-950/20 text-[#E52229] font-extrabold text-[8px] px-1.5 py-0.5 rounded border border-rose-100/40 dark:border-rose-900/30 shrink-0">${finalBlood}</span>
                                     ${verifiedBadge}
                                 </div>
-                                <h3 class="font-bold text-slate-900 dark:text-slate-100 text-xs mt-1.5 truncate group-hover:text-[#E52229] transition-colors">${finalNameBn}</h3>
+                                <h3 class="font-bold text-slate-900 dark:text-slate-100 text-xs mt-1.5 truncate group-hover:text-[#E52229] transition-colors">${finalName}</h3>
                                 <div class="text-[9px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5 truncate">
-                                    ${finalDept} • ${finalBatch}তম ব্যাচ
+                                    ${translatedDept} • ${batchText}
                                 </div>
                                 ${dbInfoHtml}
                             </div>
@@ -1747,7 +1911,7 @@
 
                         <!-- Actions -->
                         <div class="flex items-center gap-2 shrink-0 call-btn-prevent" onclick="event.stopPropagation();">
-                            <a href="tel:${finalPhone}" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-[#E52229] text-[#E52229] hover:text-white dark:bg-rose-950/20 dark:hover:bg-[#E52229] dark:text-rose-400 dark:hover:text-white flex items-center justify-center border border-rose-100/50 dark:border-rose-900/30 transition shadow-2xs" title="কল দিন">
+                            <a href="tel:${finalPhone}" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-[#E52229] text-[#E52229] hover:text-white dark:bg-rose-950/20 dark:hover:bg-[#E52229] dark:text-rose-400 dark:hover:text-white flex items-center justify-center border border-rose-100/50 dark:border-rose-900/30 transition shadow-2xs" title="${currentLang === 'bn' ? 'কল দিন' : 'Call'}">
                                 <i class="fa-solid fa-phone text-xs"></i>
                             </a>
                         </div>
@@ -1759,30 +1923,6 @@
             });
         }
 
-        function formatBengaliMonth(monthStr) {
-            const parts = monthStr.split('-');
-            if (parts.length !== 2) return monthStr;
-            const year = parts[0];
-            const month = parts[1];
-            
-            const monthNames = {
-                '01': 'জানুয়ারি',
-                '02': 'ফেব্রুয়ারি',
-                '03': 'মার্চ',
-                '04': 'এপ্রিল',
-                '05': 'মে',
-                '06': 'জুন',
-                '07': 'জুলাই',
-                '08': 'আগস্ট',
-                '09': 'সেপ্টেম্বর',
-                '10': 'অক্টোবর',
-                '11': 'নভেম্বর',
-                '12': 'ডিসেম্বর'
-            };
-            const bengaliMonth = monthNames[month] || month;
-            return `${bengaliMonth} ${year}`;
-        }
-
         // Render Treasurer Reports from Database
         function renderTreasurerReports() {
             const accordion = document.getElementById('treasurer-accordion');
@@ -1792,10 +1932,13 @@
             const filteredTxs = transactions.filter(t => t.month >= '2026-05');
 
             if (filteredTxs.length === 0) {
+                const noTxsMsg = currentLang === 'bn' 
+                    ? "মে ২০২৬ থেকে পরবর্তী কোনো হিসাব এখনো এন্ট্রি করা হয়নি।" 
+                    : "No ledger transactions have been entered since May 2026.";
                 accordion.innerHTML = `
                     <div class="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 p-8 space-y-2">
                         <i class="fa-regular fa-folder-open text-lg text-slate-300"></i>
-                        <p class="text-xs text-slate-500">মে ২০২৬ থেকে পরবর্তী কোনো হিসাব এখনো এন্ট্রি করা হয়নি।</p>
+                        <p class="text-xs text-slate-500">${noTxsMsg}</p>
                     </div>
                 `;
                 return;
@@ -1826,16 +1969,16 @@
 
                 let incomeRowsHtml = '';
                 if (incomes.length === 0) {
-                    incomeRowsHtml = `<div class="text-slate-400 py-2 text-center text-[10px]">আয়ের কোনো খাত নেই</div>`;
+                    incomeRowsHtml = `<div class="text-slate-400 py-2 text-center text-[10px]">${currentLang === 'bn' ? 'আয়ের কোনো খাত নেই' : 'No income records'}</div>`;
                 } else {
                     incomes.forEach(inc => {
                         incomeRowsHtml += `
                             <div class="flex justify-between items-center py-1.5 border-b border-slate-100 dark:border-slate-750">
                                 <div>
                                     <p class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">${inc.purpose}</p>
-                                    <p class="text-[8px] text-slate-455 font-semibold">${inc.date}</p>
+                                    <p class="text-[8px] text-slate-455 font-semibold">${currentLang === 'bn' ? translateNumber(inc.date) : inc.date}</p>
                                 </div>
-                                <span class="text-emerald-600 font-bold text-[11px]">+${inc.amount.toLocaleString()} ৳</span>
+                                <span class="text-emerald-600 font-bold text-[11px]">+${currentLang === 'bn' ? translateNumber(inc.amount.toLocaleString()) : inc.amount.toLocaleString()} ৳</span>
                             </div>
                         `;
                     });
@@ -1843,16 +1986,16 @@
 
                 let expenseRowsHtml = '';
                 if (expenses.length === 0) {
-                    expenseRowsHtml = `<div class="text-slate-400 py-2 text-center text-[10px]">ব্যয়ের কোনো খাত নেই</div>`;
+                    expenseRowsHtml = `<div class="text-slate-400 py-2 text-center text-[10px]">${currentLang === 'bn' ? 'ব্যয়ের কোনো খাত নেই' : 'No expense records'}</div>`;
                 } else {
                     expenses.forEach(exp => {
                         expenseRowsHtml += `
                             <div class="flex justify-between items-center py-1.5 border-b border-slate-100 dark:border-slate-750">
                                 <div>
                                     <p class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">${exp.purpose}</p>
-                                    <p class="text-[8px] text-slate-455 font-semibold">${exp.date}</p>
+                                    <p class="text-[8px] text-slate-455 font-semibold">${currentLang === 'bn' ? translateNumber(exp.date) : exp.date}</p>
                                 </div>
-                                <span class="text-rose-600 font-bold text-[11px]">-${exp.amount.toLocaleString()} ৳</span>
+                                <span class="text-rose-600 font-bold text-[11px]">-${currentLang === 'bn' ? translateNumber(exp.amount.toLocaleString()) : exp.amount.toLocaleString()} ৳</span>
                             </div>
                         `;
                     });
@@ -1862,6 +2005,14 @@
                     ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-400' 
                     : 'text-rose-600 bg-rose-50 dark:bg-rose-950/20 dark:text-rose-400';
 
+                const incomeLabel = currentLang === 'bn' ? 'আয়' : 'Income';
+                const expenseLabel = currentLang === 'bn' ? 'ব্যয়' : 'Expense';
+                const netLabel = currentLang === 'bn' ? 'উদ্বৃত্ত' : 'Net';
+
+                const formattedTotalIncome = currentLang === 'bn' ? translateNumber(totalIncome.toLocaleString()) : totalIncome.toLocaleString();
+                const formattedTotalExpense = currentLang === 'bn' ? translateNumber(totalExpense.toLocaleString()) : totalExpense.toLocaleString();
+                const formattedNetBalance = currentLang === 'bn' ? translateNumber(netBalance.toLocaleString()) : netBalance.toLocaleString();
+
                 blockWrapper.innerHTML = `
                     <button onclick="toggleAccordion('${accordionId}')" class="w-full flex items-center justify-between text-left focus:outline-none">
                         <div class="flex items-center gap-2.5">
@@ -1870,17 +2021,17 @@
                             </div>
                             <div>
                                 <span class="text-xs font-bold text-slate-900 dark:text-slate-150">
-                                    ${formatBengaliMonth(month)}
+                                    ${formatMonth(month)}
                                 </span>
                                 <div class="text-[9px] text-slate-400 font-bold mt-0.5">
-                                    আয়: <span class="text-emerald-600 font-semibold">${totalIncome.toLocaleString()} ৳</span> • 
-                                    ব্যয়: <span class="text-rose-600 font-semibold">${totalExpense.toLocaleString()} ৳</span>
+                                    ${incomeLabel}: <span class="text-emerald-600 font-semibold">${formattedTotalIncome} ৳</span> • 
+                                    ${expenseLabel}: <span class="text-rose-600 font-semibold">${formattedTotalExpense} ৳</span>
                                 </div>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-[9px] font-bold px-2 py-0.5 rounded-lg ${netBalanceColor}">
-                                উদ্বৃত্ত: ${netBalance.toLocaleString()} ৳
+                                ${netLabel}: ${formattedNetBalance} ৳
                             </span>
                             <i id="icon-${accordionId}" class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-200"></i>
                         </div>
@@ -1891,39 +2042,39 @@
                             <!-- Income Column -->
                             <div class="space-y-2">
                                 <h4 class="text-[9px] uppercase font-extrabold text-emerald-600 dark:text-emerald-400 tracking-wider border-b border-emerald-100 dark:border-emerald-950 pb-1 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-arrow-down-long"></i> আয় সমূহ
+                                    <i class="fa-solid fa-arrow-down-long"></i> ${currentLang === 'bn' ? 'আয় সমূহ' : 'Incomes'}
                                 </h4>
                                 <div class="divide-y divide-slate-50 dark:divide-slate-750">
                                     ${incomeRowsHtml}
                                 </div>
                                 <div class="flex justify-between items-center pt-2 font-bold text-slate-800 dark:text-slate-200 text-[11px]">
-                                    <span>মোট আয়:</span>
-                                    <span class="text-emerald-600 font-extrabold">${totalIncome.toLocaleString()} ৳</span>
+                                    <span>${currentLang === 'bn' ? 'মোট আয়:' : 'Total Income:'}</span>
+                                    <span class="text-emerald-600 font-extrabold">${formattedTotalIncome} ৳</span>
                                 </div>
                             </div>
 
                             <!-- Expense Column -->
                             <div class="space-y-2">
                                 <h4 class="text-[9px] uppercase font-extrabold text-rose-600 dark:text-rose-400 tracking-wider border-b border-rose-100 dark:border-rose-950 pb-1 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-arrow-up-long"></i> ব্যয় সমূহ
+                                    <i class="fa-solid fa-arrow-up-long"></i> ${currentLang === 'bn' ? 'ব্যয় সমূহ' : 'Expenses'}
                                 </h4>
                                 <div class="divide-y divide-slate-50 dark:divide-slate-750">
                                     ${expenseRowsHtml}
                                 </div>
                                 <div class="flex justify-between items-center pt-2 font-bold text-slate-800 dark:text-slate-200 text-[11px]">
-                                    <span>মোট ব্যয়:</span>
-                                    <span class="text-rose-600 font-extrabold">${totalExpense.toLocaleString()} ৳</span>
+                                    <span>${currentLang === 'bn' ? 'মোট ব্যয়:' : 'Total Expense:'}</span>
+                                    <span class="text-rose-600 font-extrabold">${formattedTotalExpense} ৳</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-center justify-between border-t border-slate-100 dark:border-slate-700 pt-3 gap-2">
                             <div class="text-[9px] text-slate-400 font-medium text-center sm:text-left">
-                                * এটি কোষাধ্যক্ষ লেজার থেকে রিয়েলটাইমে জেনারেট হওয়া বিবরণী।
+                                ${currentLang === 'bn' ? '* এটি কোষাধ্যক্ষ লেজার থেকে রিয়েলটাইমে জেনারেট হওয়া বিবরণী।' : '* Generated in real-time from the treasurer ledger.'}
                             </div>
                             <button onclick="downloadMonthlyPDF('${month}')" class="bg-[#E52229] hover:bg-[#c91d23] text-white text-[9px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition shadow-2xs">
                                 <i class="fa-solid fa-file-pdf text-[10px]"></i>
-                                <span>PDF ডাউনলোড</span>
+                                <span>${currentLang === 'bn' ? 'PDF ডাউনলোড' : 'Download PDF'}</span>
                             </button>
                         </div>
                     </div>
@@ -1985,14 +2136,18 @@
                     const mExp = mTxs.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
                     const mBal = mInc - mExp;
 
+                    const formattedMInc = currentLang === 'bn' ? translateNumber(mInc.toLocaleString()) : mInc.toLocaleString();
+                    const formattedMExp = currentLang === 'bn' ? translateNumber(mExp.toLocaleString()) : mExp.toLocaleString();
+                    const formattedMBal = currentLang === 'bn' ? translateNumber(mBal.toLocaleString()) : mBal.toLocaleString();
+
                     monthlyBreakdownHtml += `
                         <div class="flex justify-between items-center py-2 border-b border-rose-100/35 dark:border-rose-900/10 text-xs">
-                            <span class="font-bold text-slate-800 dark:text-slate-200">${formatBengaliMonth(m)}</span>
+                            <span class="font-bold text-slate-800 dark:text-slate-200">${formatMonth(m)}</span>
                             <div class="space-x-3 text-[10px] text-slate-400">
-                                <span>আয়: <span class="text-emerald-600 font-semibold">${mInc.toLocaleString()} ৳</span></span>
-                                <span>ব্যয়: <span class="text-rose-600 font-semibold">${mExp.toLocaleString()} ৳</span></span>
+                                <span>${currentLang === 'bn' ? 'আয়:' : 'Inc:'} <span class="text-emerald-600 font-semibold">${formattedMInc} ৳</span></span>
+                                <span>${currentLang === 'bn' ? 'ব্যয়:' : 'Exp:'} <span class="text-rose-600 font-semibold">${formattedMExp} ৳</span></span>
                             </div>
-                            <span class="font-bold ${mBal >= 0 ? 'text-emerald-600' : 'text-rose-600'}">${mBal.toLocaleString()} ৳</span>
+                            <span class="font-bold ${mBal >= 0 ? 'text-emerald-600' : 'text-rose-600'}">${formattedMBal} ৳</span>
                         </div>
                     `;
                 });
@@ -2000,6 +2155,11 @@
                 const balanceColor = netBalance >= 0 
                     ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-400' 
                     : 'text-rose-600 bg-rose-50 dark:bg-rose-950/20 dark:text-rose-400';
+
+                const formattedTotalIncome = currentLang === 'bn' ? translateNumber(totalIncome.toLocaleString()) : totalIncome.toLocaleString();
+                const formattedTotalExpense = currentLang === 'bn' ? translateNumber(totalExpense.toLocaleString()) : totalExpense.toLocaleString();
+                const formattedNetBalance = currentLang === 'bn' ? translateNumber(netBalance.toLocaleString()) : netBalance.toLocaleString();
+                const formattedYear = currentLang === 'bn' ? translateNumber(year) : year;
 
                 blockWrapper.innerHTML = `
                     <button onclick="toggleAccordion('${accordionId}')" class="w-full flex items-center justify-between text-left focus:outline-none">
@@ -2009,17 +2169,17 @@
                             </div>
                             <div>
                                 <span class="text-xs font-bold text-slate-900 dark:text-slate-150">
-                                    বাৎসরিক রিপোর্ট - ${year}
+                                    ${currentLang === 'bn' ? 'বাৎসরিক রিপোর্ট - ' + formattedYear : 'Annual Report - ' + formattedYear}
                                 </span>
                                 <div class="text-[9px] text-slate-400 font-bold mt-0.5">
-                                    মোট আয়: <span class="text-emerald-600 font-semibold">${totalIncome.toLocaleString()} ৳</span> • 
-                                    মোট ব্যয়: <span class="text-rose-600 font-semibold">${totalExpense.toLocaleString()} ৳</span>
+                                    ${currentLang === 'bn' ? 'মোট আয়:' : 'Total Income:'} <span class="text-emerald-600 font-semibold">${formattedTotalIncome} ৳</span> • 
+                                    ${currentLang === 'bn' ? 'মোট ব্যয়:' : 'Total Expense:'} <span class="text-rose-600 font-semibold">${formattedTotalExpense} ৳</span>
                                 </div>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-[9px] font-bold px-2 py-0.5 rounded-lg ${balanceColor}">
-                                মোট উদ্বৃত্ত: ${netBalance.toLocaleString()} ৳
+                                ${currentLang === 'bn' ? 'মোট উদ্বৃত্ত:' : 'Total Net:'} ${formattedNetBalance} ৳
                             </span>
                             <i id="icon-${accordionId}" class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-200"></i>
                         </div>
@@ -2028,7 +2188,7 @@
                         
                         <div class="space-y-2">
                             <h4 class="text-[9px] uppercase font-extrabold text-[#E52229] tracking-wider pb-1 border-b border-rose-100 dark:border-rose-900/30 flex items-center gap-1.5">
-                                <i class="fa-solid fa-list"></i> মাসিক সারাংশ
+                                <i class="fa-solid fa-list"></i> ${currentLang === 'bn' ? 'মাসিক সারাংশ' : 'Monthly Summary'}
                             </h4>
                             <div class="divide-y divide-rose-50 dark:divide-rose-950">
                                 ${monthlyBreakdownHtml}
@@ -2037,11 +2197,11 @@
 
                         <div class="flex flex-col sm:flex-row items-center justify-between pt-3 gap-2">
                             <div class="text-[9px] text-slate-400 font-medium">
-                                * এটি ${year} সালের কোষাধ্যক্ষ বাৎসরিক অডিট বিবরণী।
+                                ${currentLang === 'bn' ? `* এটি ${formattedYear} সালের কোষাধ্যক্ষ বাৎসরিক অডিট বিবরণী।` : `* This is the treasurer annual audit report for ${formattedYear}.`}
                             </div>
                             <button onclick="downloadYearlyPDF('${year}')" class="bg-rose-600 hover:bg-rose-700 text-white text-[9px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition shadow-2xs">
                                 <i class="fa-solid fa-file-pdf text-[10px]"></i>
-                                <span>বাৎসরিক PDF ডাউনলোড</span>
+                                <span>${currentLang === 'bn' ? 'বাৎসরিক PDF ডাউনলোড' : 'Download Annual PDF'}</span>
                             </button>
                         </div>
                     </div>
@@ -2050,6 +2210,9 @@
             });
         }
 
+        // ==========================================
+        // PDF REPORT DOWNLOAD SYSTEM
+        // ==========================================
         function downloadYearlyPDF(year) {
             const eligibleTxs = transactions.filter(t => t.month.startsWith(year) && t.month >= '2026-05');
             const incomes = eligibleTxs.filter(t => t.type === 'income');
@@ -2067,12 +2230,16 @@
                 const mExp = mTxs.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
                 const mBal = mInc - mExp;
 
+                const formattedMInc = currentLang === 'bn' ? translateNumber(mInc.toLocaleString()) : mInc.toLocaleString();
+                const formattedMExp = currentLang === 'bn' ? translateNumber(mExp.toLocaleString()) : mExp.toLocaleString();
+                const formattedMBal = currentLang === 'bn' ? translateNumber(mBal.toLocaleString()) : mBal.toLocaleString();
+
                 return `
                     <tr style="border-bottom: 1px solid #e2e8f0;">
-                        <td style="padding: 10px; font-size: 11px; font-weight: bold;">${formatBengaliMonth(m)}</td>
-                        <td style="padding: 10px; font-size: 11px; text-align: right; color: #10b981; font-weight: bold;">+${mInc.toLocaleString()} ৳</td>
-                        <td style="padding: 10px; font-size: 11px; text-align: right; color: #ef4444; font-weight: bold;">-${mExp.toLocaleString()} ৳</td>
-                        <td style="padding: 10px; font-size: 11px; text-align: right; color: ${mBal >= 0 ? '#10b981' : '#ef4444'}; font-weight: bold;">${mBal.toLocaleString()} ৳</td>
+                        <td style="padding: 10px; font-size: 11px; font-weight: bold;">${formatMonth(m)}</td>
+                        <td style="padding: 10px; font-size: 11px; text-align: right; color: #10b981; font-weight: bold;">+${formattedMInc} ৳</td>
+                        <td style="padding: 10px; font-size: 11px; text-align: right; color: #ef4444; font-weight: bold;">-${formattedMExp} ৳</td>
+                        <td style="padding: 10px; font-size: 11px; text-align: right; color: ${mBal >= 0 ? '#10b981' : '#ef4444'}; font-weight: bold;">${formattedMBal} ৳</td>
                     </tr>
                 `;
             }).join('');
@@ -2083,15 +2250,41 @@
             printContainer.style.color = '#1e293b';
             printContainer.style.backgroundColor = '#ffffff';
 
+            const titleLabel = currentLang === 'bn' ? 'বাৎসরিক হিসাব বিবরণী' : 'Annual Financial Statement';
+            const yearLabel = currentLang === 'bn' ? `বছর: ${translateNumber(year)}` : `Year: ${year}`;
+            
+            const tableHeaders = currentLang === 'bn' 
+                ? `<th style="padding: 10px; font-size: 11px; text-align: left; color: #475569;">মাস</th>
+                   <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">মোট আয়</th>
+                   <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">মোট ব্যয়</th>
+                   <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">উদ্বৃত্ত (Balance)</th>`
+                : `<th style="padding: 10px; font-size: 11px; text-align: left; color: #475569;">Month</th>
+                   <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">Total Income</th>
+                   <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">Total Expense</th>
+                   <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">Balance</th>`;
+
+            const totalIncomeText = currentLang === 'bn' ? translateNumber(totalIncome.toLocaleString()) : totalIncome.toLocaleString();
+            const totalExpenseText = currentLang === 'bn' ? translateNumber(totalExpense.toLocaleString()) : totalExpense.toLocaleString();
+            const netBalanceText = currentLang === 'bn' ? translateNumber(netBalance.toLocaleString()) : netBalance.toLocaleString();
+
+            const totalRowLabel = currentLang === 'bn' ? 'মোট বাৎসরিক হিসাব:' : 'Total Annual Statement:';
+            const totalNetLabel = currentLang === 'bn' ? 'মোট বাৎসরিক উদ্বৃত্ত (Annual Balance)' : 'Total Annual Balance';
+            const printTimeText = currentLang === 'bn' 
+                ? `রিপোর্ট তৈরির সময়: ${translateNumber(new Date().toLocaleString())}`
+                : `Report Generated: ${new Date().toLocaleString()}`;
+
+            const signTreasurer = currentLang === 'bn' ? 'কোষাধ্যক্ষ স্বাক্ষর' : 'Treasurer Signature';
+            const signPresident = currentLang === 'bn' ? 'সভাপতি স্বাক্ষর' : 'President Signature';
+
             printContainer.innerHTML = `
                 <div style="border-bottom: 3px solid #E52229; padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
                     <div>
-                        <h1 style="font-size: 18px; margin: 0; color: #1e293b;">বাঁধন (Badhan)</h1>
-                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #64748b; font-weight: bold;">শহীদ রফিক-জব্বার হল ইউনিট, জাবি</p>
+                        <h1 style="font-size: 18px; margin: 0; color: #1e293b;">${currentLang === 'bn' ? 'বাঁধন (Badhan)' : 'Badhan'}</h1>
+                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #64748b; font-weight: bold;">${currentLang === 'bn' ? 'শহীদ রফিক-জব্বার হল ইউনিট, জাবি' : 'Shahid Rafiq-Jabbar Hall Unit, JU'}</p>
                     </div>
                     <div style="text-align: right;">
-                        <h2 style="font-size: 14px; margin: 0; color: #E52229;">বাৎসরিক হিসাব বিবরণী</h2>
-                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #475569; font-weight: bold;">বছর: ${year}</p>
+                        <h2 style="font-size: 14px; margin: 0; color: #E52229;">${titleLabel}</h2>
+                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #475569; font-weight: bold;">${yearLabel}</p>
                     </div>
                 </div>
 
@@ -2099,19 +2292,16 @@
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                         <thead>
                             <tr style="background-color: #f8fafc; border-bottom: 2px solid #cbd5e1;">
-                                <th style="padding: 10px; font-size: 11px; text-align: left; color: #475569;">মাস</th>
-                                <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">মোট আয়</th>
-                                <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">মোট ব্যয়</th>
-                                <th style="padding: 10px; font-size: 11px; text-align: right; color: #475569;">উদ্বৃত্ত (Balance)</th>
+                                ${tableHeaders}
                             </tr>
                         </thead>
                         <tbody>
                             ${monthlyRows}
                             <tr style="background-color: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;">
-                                <td style="padding: 10px; font-size: 11px; color: #1e293b;">মোট বাৎসরিক হিসাব:</td>
-                                <td style="padding: 10px; font-size: 11px; text-align: right; color: #166534;">+${totalIncome.toLocaleString()} ৳</td>
-                                <td style="padding: 10px; font-size: 11px; text-align: right; color: #991b1b;">-${totalExpense.toLocaleString()} ৳</td>
-                                <td style="padding: 10px; font-size: 11px; text-align: right; color: ${netBalance >= 0 ? '#166534' : '#991b1b'}; font-size: 12px;">${netBalance.toLocaleString()} ৳</td>
+                                <td style="padding: 10px; font-size: 11px; color: #1e293b;">${totalRowLabel}</td>
+                                <td style="padding: 10px; font-size: 11px; text-align: right; color: #166534;">+${totalIncomeText} ৳</td>
+                                <td style="padding: 10px; font-size: 11px; text-align: right; color: #991b1b;">-${totalExpenseText} ৳</td>
+                                <td style="padding: 10px; font-size: 11px; text-align: right; color: ${netBalance >= 0 ? '#166534' : '#991b1b'}; font-size: 12px;">${netBalanceText} ৳</td>
                             </tr>
                         </tbody>
                     </table>
@@ -2119,20 +2309,20 @@
 
                 <div style="border-top: 2px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
                     <div>
-                        <p style="font-size: 9px; margin: 0; color: #64748b;">রিপোর্ট তৈরির সময়: ${new Date().toLocaleString()}</p>
+                        <p style="font-size: 9px; margin: 0; color: #64748b;">${printTimeText}</p>
                     </div>
                     <div style="text-align: right; background-color: #f8fafc; padding: 10px 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <span style="font-size: 9px; font-weight: bold; color: #475569; display: block; margin-bottom: 2px;">মোট বাৎসরিক উদ্বৃত্ত (Annual Balance)</span>
-                        <span style="font-size: 14px; font-weight: 800; color: ${netBalance >= 0 ? '#10b981' : '#ef4444'};">${netBalance.toLocaleString()} ৳</span>
+                        <span style="font-size: 9px; font-weight: bold; color: #475569; display: block; margin-bottom: 2px;">${totalNetLabel}</span>
+                        <span style="font-size: 14px; font-weight: 800; color: ${netBalance >= 0 ? '#10b981' : '#ef4444'};">${netBalanceText} ৳</span>
                     </div>
                 </div>
 
                 <div style="margin-top: 60px; display: flex; justify-content: space-between;">
                     <div style="width: 140px; text-align: center; border-top: 1px solid #94a3b8; padding-top: 5px; font-size: 9px; color: #475569;">
-                        কোষাধ্যক্ষ স্বাক্ষর
+                        ${signTreasurer}
                     </div>
                     <div style="width: 140px; text-align: center; border-top: 1px solid #94a3b8; padding-top: 5px; font-size: 9px; color: #475569;">
-                        সভাপতি স্বাক্ষর
+                        ${signPresident}
                     </div>
                 </div>
             `;
@@ -2145,7 +2335,159 @@
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            triggerToast("বাৎসরিক পিডিএফ ডাউনলোড শুরু হয়েছে! 📥");
+            const downloadSuccessToast = currentLang === 'bn' 
+                ? "বাৎসরিক পিডিএফ ডাউনলোড শুরু হয়েছে! 📥" 
+                : "Annual PDF download has started! 📥";
+            triggerToast(downloadSuccessToast);
+            html2pdf().from(printContainer).set(opt).save();
+        }
+
+        function downloadMonthlyPDF(month) {
+            const filteredTxs = transactions.filter(t => t.month === month);
+            const incomes = filteredTxs.filter(t => t.type === 'income');
+            const expenses = filteredTxs.filter(t => t.type === 'expense');
+
+            const totalIncome = incomes.reduce((sum, t) => sum + t.amount, 0);
+            const totalExpense = expenses.reduce((sum, t) => sum + t.amount, 0);
+            const netBalance = totalIncome - totalExpense;
+
+            const printContainer = document.createElement('div');
+            printContainer.style.padding = '30px';
+            printContainer.style.fontFamily = "'Hind Siliguri', 'Inter', sans-serif";
+            printContainer.style.color = '#1e293b';
+            printContainer.style.backgroundColor = '#ffffff';
+
+            const formattedTotalIncome = currentLang === 'bn' ? translateNumber(totalIncome.toLocaleString()) : totalIncome.toLocaleString();
+            const formattedTotalExpense = currentLang === 'bn' ? translateNumber(totalExpense.toLocaleString()) : totalExpense.toLocaleString();
+            const formattedNetBalance = currentLang === 'bn' ? translateNumber(netBalance.toLocaleString()) : netBalance.toLocaleString();
+
+            const incomeRows = incomes.map(inc => {
+                const formattedIncDate = currentLang === 'bn' ? translateNumber(inc.date) : inc.date;
+                const formattedIncAmount = currentLang === 'bn' ? translateNumber(inc.amount.toLocaleString()) : inc.amount.toLocaleString();
+                return `
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 8px; font-size: 11px;">${formattedIncDate}</td>
+                        <td style="padding: 8px; font-size: 11px; font-weight: bold;">${inc.purpose}</td>
+                        <td style="padding: 8px; font-size: 11px; text-align: right; color: #10b981; font-weight: bold;">+${formattedIncAmount} ৳</td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="3" style="padding: 8px; text-align: center; color: #94a3b8; font-size: 11px;">${currentLang === 'bn' ? 'আয়ের কোনো হিসাব নেই' : 'No income records'}</td></tr>`;
+
+            const expenseRows = expenses.map(exp => {
+                const formattedExpDate = currentLang === 'bn' ? translateNumber(exp.date) : exp.date;
+                const formattedExpAmount = currentLang === 'bn' ? translateNumber(exp.amount.toLocaleString()) : exp.amount.toLocaleString();
+                return `
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 8px; font-size: 11px;">${formattedExpDate}</td>
+                        <td style="padding: 8px; font-size: 11px; font-weight: bold;">${exp.purpose}</td>
+                        <td style="padding: 8px; font-size: 11px; text-align: right; color: #ef4444; font-weight: bold;">-${formattedExpAmount} ৳</td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="3" style="padding: 8px; text-align: center; color: #94a3b8; font-size: 11px;">${currentLang === 'bn' ? 'ব্যয়ের কোনো হিসাব নেই' : 'No expense records'}</td></tr>`;
+
+            const formattedMonth = formatMonth(month);
+
+            const titleLabel = currentLang === 'bn' ? 'কোষাধ্যক্ষের আয়-ব্যয় রিপোর্ট' : 'Treasurer Ledger Report';
+            const subtitleLabel = currentLang === 'bn' ? `হিসাব মাস: ${formattedMonth}` : `Ledger Month: ${formattedMonth}`;
+            
+            const incomeHeaders = currentLang === 'bn' 
+                ? `<th style="padding: 8px; font-size: 11px; text-align: left; color: #475569;">আয়ের বিবরণ</th>
+                   <th style="padding: 8px; font-size: 11px; text-align: right; color: #475569;" colspan="2">পরিমাণ</th>`
+                : `<th style="padding: 8px; font-size: 11px; text-align: left; color: #475569;">Income Purpose</th>
+                   <th style="padding: 8px; font-size: 11px; text-align: right; color: #475569;" colspan="2">Amount</th>`;
+
+            const expenseHeaders = currentLang === 'bn' 
+                ? `<th style="padding: 8px; font-size: 11px; text-align: left; color: #475569;">ব্যয়ের বিবরণ</th>
+                   <th style="padding: 8px; font-size: 11px; text-align: right; color: #475569;" colspan="2">পরিমাণ</th>`
+                : `<th style="padding: 8px; font-size: 11px; text-align: left; color: #475569;">Expense Purpose</th>
+                   <th style="padding: 8px; font-size: 11px; text-align: right; color: #475569;" colspan="2">Amount</th>`;
+
+            const totalIncomeLabel = currentLang === 'bn' ? 'মোট আয়:' : 'Total Income:';
+            const totalExpenseLabel = currentLang === 'bn' ? 'মোট ব্যয়:' : 'Total Expense:';
+            const remainingFundLabel = currentLang === 'bn' ? 'অবशिष्ट তহবিল (Net Balance)' : 'Remaining Fund (Net Balance)';
+            const printTimeText = currentLang === 'bn' 
+                ? `রিপোর্ট তৈরির সময়: ${translateNumber(new Date().toLocaleString())}`
+                : `Report Generated: ${new Date().toLocaleString()}`;
+
+            const signTreasurer = currentLang === 'bn' ? 'কোষাধ্যক্ষ স্বাক্ষর' : 'Treasurer Signature';
+            const signPresident = currentLang === 'bn' ? 'সভাপতি স্বাক্ষর' : 'President Signature';
+
+            printContainer.innerHTML = `
+                <div style="border-bottom: 3px solid #E52229; padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <h1 style="font-size: 18px; margin: 0; color: #1e293b;">${currentLang === 'bn' ? 'বাঁধন (Badhan)' : 'Badhan'}</h1>
+                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #64748b; font-weight: bold;">${currentLang === 'bn' ? 'শহীদ রফিক-জব্বার হল ইউনিট, জাবি' : 'Shahid Rafiq-Jabbar Hall Unit, JU'}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <h2 style="font-size: 13px; margin: 0; color: #E52229;">${titleLabel}</h2>
+                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #475569; font-weight: bold;">${subtitleLabel}</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr style="background-color: #f8fafc; border-bottom: 2px solid #cbd5e1;">
+                                ${incomeHeaders}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${incomeRows}
+                            <tr style="background-color: #f0fdf4; font-weight: bold;">
+                                <td style="padding: 8px; font-size: 11px; color: #166534;" colspan="2">${totalIncomeLabel}</td>
+                                <td style="padding: 8px; font-size: 11px; text-align: right; color: #166534;">${formattedTotalIncome} ৳</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #f8fafc; border-bottom: 2px solid #cbd5e1;">
+                                ${expenseHeaders}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${expenseRows}
+                            <tr style="background-color: #fef2f2; font-weight: bold;">
+                                <td style="padding: 8px; font-size: 11px; color: #991b1b;" colspan="2">${totalExpenseLabel}</td>
+                                <td style="padding: 8px; font-size: 11px; text-align: right; color: #991b1b;">${formattedTotalExpense} ৳</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="border-top: 2px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
+                    <div>
+                        <p style="font-size: 9px; margin: 0; color: #64748b;">${printTimeText}</p>
+                    </div>
+                    <div style="text-align: right; background-color: #f8fafc; padding: 10px 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 9px; font-weight: bold; color: #475569; display: block; margin-bottom: 2px;">${remainingFundLabel}</span>
+                        <span style="font-size: 13px; font-weight: 800; color: ${netBalance >= 0 ? '#10b981' : '#ef4444'};">${formattedNetBalance} ৳</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 50px; display: flex; justify-content: space-between;">
+                    <div style="width: 140px; text-align: center; border-top: 1px solid #94a3b8; padding-top: 5px; font-size: 9px; color: #475569;">
+                        ${signTreasurer}
+                    </div>
+                    <div style="width: 140px; text-align: center; border-top: 1px solid #94a3b8; padding-top: 5px; font-size: 9px; color: #475569;">
+                        ${signPresident}
+                    </div>
+                </div>
+            `;
+
+            const opt = {
+                margin:       10,
+                filename:     `Treasurer_Ledger_${month}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            const downloadSuccessToast = currentLang === 'bn' 
+                ? "পিডিএফ ডাউনলোড শুরু হয়েছে! 📥" 
+                : "PDF download has started! 📥";
+            triggerToast(downloadSuccessToast);
             html2pdf().from(printContainer).set(opt).save();
         }
 
@@ -2165,13 +2507,19 @@
         // TREASURER ADMIN SYSTEM LEDGER CONTROLS
         // ==========================================
         function promptTreasurerPassword() {
-            const password = prompt("কোষাধ্যক্ষ প্যানেল অ্যাক্সেস করতে পাসওয়ার্ড দিন:");
+            const promptMsg = currentLang === 'bn' 
+                ? "কোষাধ্যক্ষ প্যানেল অ্যাক্সেস করতে পাসওয়ার্ড দিন:" 
+                : "Enter password to access Treasurer Panel:";
+            const password = prompt(promptMsg);
             if (password === null) return;
             if (password === 'badhansrj734') {
                 openModal('treasurer-modal');
                 renderTxList();
             } else {
-                alert("ভুল পাসওয়ার্ড! অ্যাক্সেস প্রত্যাখ্যাত।");
+                const alertMsg = currentLang === 'bn' 
+                    ? "ভুল পাসওয়ার্ড! অ্যাক্সেস প্রত্যাখ্যাত।" 
+                    : "Wrong password! Access denied.";
+                alert(alertMsg);
             }
         }
 
@@ -2182,7 +2530,11 @@
             const submitBtn = document.getElementById('tx-submit-btn');
             const originalBtnText = submitBtn.innerHTML;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> সংরক্ষণ হচ্ছে...`;
+            
+            const savingMsg = currentLang === 'bn' 
+                ? `<i class="fa-solid fa-spinner fa-spin mr-1"></i> সংরক্ষণ হচ্ছে...` 
+                : `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...`;
+            submitBtn.innerHTML = savingMsg;
 
             try {
                 const month = document.getElementById('tx-month').value;
@@ -2199,17 +2551,20 @@
 
                 if (editingTxId) {
                     await pb.collection('transactions').update(editingTxId, data);
-                    triggerToast("লেনদেন সফলভাবে আপডেট করা হয়েছে! 💰");
+                    const updateMsg = currentLang === 'bn' ? "লেনদেন সফলভাবে আপডেট করা হয়েছে! 💰" : "Transaction updated successfully! 💰";
+                    triggerToast(updateMsg);
                 } else {
                     await pb.collection('transactions').create(data);
-                    triggerToast("নতুন লেনদেন যুক্ত করা হয়েছে! 💰");
+                    const createMsg = currentLang === 'bn' ? "নতুন লেনদেন যুক্ত করা হয়েছে! 💰" : "New transaction added successfully! 💰";
+                    triggerToast(createMsg);
                 }
 
                 cancelTxEdit();
                 document.getElementById('tx-form').reset();
             } catch (err) {
                 console.error("Transaction save failed:", err);
-                triggerToast("সংরক্ষণ করতে ব্যর্থ! অনুগ্রহ করে আবার চেষ্টা করুন। ⚠️");
+                const failMsg = currentLang === 'bn' ? "সংরক্ষণ করতে ব্যর্থ! অনুগ্রহ করে আবার চেষ্টা করুন। ⚠️" : "Failed to save! Please try again. ⚠️";
+                triggerToast(failMsg);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
@@ -2227,8 +2582,13 @@
             document.getElementById('tx-amount').value = tx.amount;
             document.getElementById('tx-purpose').value = tx.purpose;
 
-            document.getElementById('tx-form-title').innerHTML = `<i class="fa-solid fa-user-pen text-rose-500"></i> লেনদেন তথ্য সংশোধন`;
-            document.getElementById('tx-submit-btn').innerHTML = `আপডেট করুন 💾`;
+            const editTitle = currentLang === 'bn' 
+                ? `<i class="fa-solid fa-user-pen text-rose-500"></i> লেনদেন তথ্য সংশোধন` 
+                : `<i class="fa-solid fa-user-pen text-rose-500"></i> Edit Transaction Details`;
+            document.getElementById('tx-form-title').innerHTML = editTitle;
+
+            const editBtnText = currentLang === 'bn' ? "আপডেট করুন 💾" : "Update Transaction 💾";
+            document.getElementById('tx-submit-btn').innerHTML = editBtnText;
             document.getElementById('tx-edit-cancel-container').classList.remove('hidden');
         }
 
@@ -2236,23 +2596,34 @@
             editingTxId = null;
             document.getElementById('tx-id').value = '';
             document.getElementById('tx-form').reset();
-            document.getElementById('tx-form-title').innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-500"></i> নতুন লেনদেন যুক্ত করুন`;
-            document.getElementById('tx-submit-btn').innerHTML = `যোগ করুন ➕`;
+            
+            const addTitle = currentLang === 'bn' 
+                ? `<i class="fa-solid fa-plus-circle text-emerald-500"></i> নতুন লেনদেন যুক্ত করুন` 
+                : `<i class="fa-solid fa-plus-circle text-emerald-500"></i> Add New Transaction`;
+            document.getElementById('tx-form-title').innerHTML = addTitle;
+
+            const addBtnText = currentLang === 'bn' ? "যোগ করুন ➕" : "Add Transaction ➕";
+            document.getElementById('tx-submit-btn').innerHTML = addBtnText;
             document.getElementById('tx-edit-cancel-container').classList.add('hidden');
         }
 
         async function deleteTransaction(id) {
-            if (!confirm("আপনি কি নিশ্চিতভাবে এই লেনদেনটি ডিলিট করতে চান?")) return;
+            const confirmMsg = currentLang === 'bn' 
+                ? "আপনি কি নিশ্চিতভাবে এই লেনদেনটি ডিলিট করতে চান?" 
+                : "Are you sure you want to delete this transaction?";
+            if (!confirm(confirmMsg)) return;
 
             try {
                 await pb.collection('transactions').delete(id);
-                triggerToast("লেনদেনটি ডিলিট করা হয়েছে! 🗑️");
+                const deleteMsg = currentLang === 'bn' ? "লেনদেনটি ডিলিট করা হয়েছে! 🗑️" : "Transaction deleted! 🗑️";
+                triggerToast(deleteMsg);
                 if (editingTxId === id) {
                     cancelTxEdit();
                 }
             } catch (err) {
                 console.error("Delete failed:", err);
-                triggerToast("লেনদেন ডিলিট ব্যর্থ হয়েছে! ⚠️");
+                const deleteFailMsg = currentLang === 'bn' ? "লেনদেন ডিলিট ব্যর্থ হয়েছে! ⚠️" : "Failed to delete transaction! ⚠️";
+                triggerToast(deleteFailMsg);
             }
         }
 
@@ -2270,20 +2641,23 @@
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center p-3 text-slate-400">কোনো লেনদেন পাওয়া যায়নি</td></tr>`;
+                const noTxsMsg = currentLang === 'bn' ? "কোনো লেনদেন পাওয়া যায়নি" : "No transactions found";
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center p-3 text-slate-400">${noTxsMsg}</td></tr>`;
                 return;
             }
 
             filtered.forEach(tx => {
-                const typeText = tx.type === 'income' ? '<span class="text-emerald-600 font-bold">আয়</span>' : '<span class="text-rose-600 font-bold">ব্যয়</span>';
+                const typeText = tx.type === 'income' 
+                    ? (currentLang === 'bn' ? '<span class="text-emerald-600 font-bold">আয়</span>' : '<span class="text-emerald-600 font-bold">Income</span>')
+                    : (currentLang === 'bn' ? '<span class="text-rose-600 font-bold">ব্যয়</span>' : '<span class="text-rose-600 font-bold">Expense</span>');
                 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/40 transition";
                 tr.innerHTML = `
-                    <td class="p-2 font-semibold">${tx.month}</td>
+                    <td class="p-2 font-semibold">${currentLang === 'bn' ? translateNumber(tx.month) : tx.month}</td>
                     <td class="p-2">${typeText}</td>
                     <td class="p-2 font-medium truncate max-w-[180px]" title="${tx.purpose}">${tx.purpose}</td>
-                    <td class="p-2 text-right font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}">${tx.amount.toLocaleString()} ৳</td>
+                    <td class="p-2 text-right font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}">${currentLang === 'bn' ? translateNumber(tx.amount.toLocaleString()) : tx.amount.toLocaleString()} ৳</td>
                     <td class="p-2 text-center space-x-1 whitespace-nowrap">
                         <button onclick="editTransaction('${tx.id}')" class="bg-slate-150 hover:bg-slate-200 text-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-200 px-2 py-1 rounded text-[9px] transition">
                             <i class="fa-solid fa-pen"></i>
@@ -2295,120 +2669,6 @@
                 `;
                 tbody.appendChild(tr);
             });
-        }
-
-        // ==========================================
-        // PDF REPORT DOWNLOAD SYSTEM
-        // ==========================================
-        function downloadMonthlyPDF(month) {
-            const filteredTxs = transactions.filter(t => t.month === month);
-            const incomes = filteredTxs.filter(t => t.type === 'income');
-            const expenses = filteredTxs.filter(t => t.type === 'expense');
-
-            const totalIncome = incomes.reduce((sum, t) => sum + t.amount, 0);
-            const totalExpense = expenses.reduce((sum, t) => sum + t.amount, 0);
-            const netBalance = totalIncome - totalExpense;
-
-            const printContainer = document.createElement('div');
-            printContainer.style.padding = '30px';
-            printContainer.style.fontFamily = "'Hind Siliguri', 'Inter', sans-serif";
-            printContainer.style.color = '#1e293b';
-            printContainer.style.backgroundColor = '#ffffff';
-
-            const incomeRows = incomes.map(inc => `
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                    <td style="padding: 8px; font-size: 11px;">${inc.date}</td>
-                    <td style="padding: 8px; font-size: 11px; font-weight: bold;">${inc.purpose}</td>
-                    <td style="padding: 8px; font-size: 11px; text-align: right; color: #10b981; font-weight: bold;">+${inc.amount.toLocaleString()} ৳</td>
-                </tr>
-            `).join('') || '<tr><td colspan="3" style="padding: 8px; text-align: center; color: #94a3b8; font-size: 11px;">আয়ের কোনো হিসাব নেই</td></tr>';
-
-            const expenseRows = expenses.map(exp => `
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                    <td style="padding: 8px; font-size: 11px;">${exp.date}</td>
-                    <td style="padding: 8px; font-size: 11px; font-weight: bold;">${exp.purpose}</td>
-                    <td style="padding: 8px; font-size: 11px; text-align: right; color: #ef4444; font-weight: bold;">-${exp.amount.toLocaleString()} ৳</td>
-                </tr>
-            `).join('') || '<tr><td colspan="3" style="padding: 8px; text-align: center; color: #94a3b8; font-size: 11px;">ব্যয়ের কোনো হিসাব নেই</td></tr>';
-
-            const formattedMonth = formatBengaliMonth(month);
-
-            printContainer.innerHTML = `
-                <div style="border-bottom: 3px solid #E52229; padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
-                    <div>
-                        <h1 style="font-size: 18px; margin: 0; color: #1e293b;">বাঁধন (Badhan)</h1>
-                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #64748b; font-weight: bold;">শহীদ রফিক-জব্বার হল ইউনিট, জাবি</p>
-                    </div>
-                    <div style="text-align: right;">
-                        <h2 style="font-size: 13px; margin: 0; color: #E52229;">কোষাধ্যক্ষের আয়-ব্যয় রিপোর্ট</h2>
-                        <p style="font-size: 10px; margin: 2px 0 0 0; color: #475569; font-weight: bold;">হিসাব মাস: ${formattedMonth}</p>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 25px;">
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                        <thead>
-                            <tr style="background-color: #f8fafc; border-bottom: 2px solid #cbd5e1;">
-                                <th style="padding: 8px; font-size: 11px; text-align: left; color: #475569;">আয়ের বিবরণ</th>
-                                <th style="padding: 8px; font-size: 11px; text-align: right; color: #475569;" colspan="2">পরিমাণ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${incomeRows}
-                            <tr style="background-color: #f0fdf4; font-weight: bold;">
-                                <td style="padding: 8px; font-size: 11px; color: #166534;" colspan="2">মোট আয়:</td>
-                                <td style="padding: 8px; font-size: 11px; text-align: right; color: #166534;">${totalIncome.toLocaleString()} ৳</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background-color: #f8fafc; border-bottom: 2px solid #cbd5e1;">
-                                <th style="padding: 8px; font-size: 11px; text-align: left; color: #475569;">ব্যয়ের বিবরণ</th>
-                                <th style="padding: 8px; font-size: 11px; text-align: right; color: #475569;" colspan="2">পরিমাণ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${expenseRows}
-                            <tr style="background-color: #fef2f2; font-weight: bold;">
-                                <td style="padding: 8px; font-size: 11px; color: #991b1b;" colspan="2">মোট ব্যয়:</td>
-                                <td style="padding: 8px; font-size: 11px; text-align: right; color: #991b1b;">${totalExpense.toLocaleString()} ৳</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div style="border-top: 2px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
-                    <div>
-                        <p style="font-size: 9px; margin: 0; color: #64748b;">রিপোর্ট তৈরির সময়: ${new Date().toLocaleString()}</p>
-                    </div>
-                    <div style="text-align: right; background-color: #f8fafc; padding: 10px 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <span style="font-size: 9px; font-weight: bold; color: #475569; display: block; margin-bottom: 2px;">অবশিষ্ট তহবিল (Net Balance)</span>
-                        <span style="font-size: 13px; font-weight: 800; color: ${netBalance >= 0 ? '#10b981' : '#ef4444'};">${netBalance.toLocaleString()} ৳</span>
-                    </div>
-                </div>
-
-                <div style="margin-top: 50px; display: flex; justify-content: space-between;">
-                    <div style="width: 140px; text-align: center; border-top: 1px solid #94a3b8; padding-top: 5px; font-size: 9px; color: #475569;">
-                        কোষাধ্যক্ষ স্বাক্ষর
-                    </div>
-                    <div style="width: 140px; text-align: center; border-top: 1px solid #94a3b8; padding-top: 5px; font-size: 9px; color: #475569;">
-                        সভাপতি স্বাক্ষর
-                    </div>
-                </div>
-            `;
-
-            const opt = {
-                margin:       10,
-                filename:     `Treasurer_Ledger_${month}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            triggerToast("পিডিএফ ডাউনলোড শুরু হয়েছে! 📥");
-            html2pdf().from(printContainer).set(opt).save();
         }
 
         // ==========================================
@@ -2451,13 +2711,25 @@
         function showDonorDetails(donor) {
             activeDetailedDonor = donor;
             
-            document.getElementById('detail-name').innerText = donor.name;
-            document.getElementById('detail-meta').innerText = `${donor.department} • ${donor.session}`;
-            document.getElementById('detail-bg').innerText = donor.bloodGroup;
-            document.getElementById('detail-room').innerText = donor.room || "রেকর্ড নেই";
-            document.getElementById('detail-weight').innerText = donor.weight ? `${donor.weight} কেজি` : "রেকর্ড নেই";
+            // Name mapping for executive committee members if lang is BN
+            const isCommitteeMember = committeeMembers.some(m => m.roll === donor.roll && m.batch === donor.session);
+            let displayName = donor.name;
+            if (isCommitteeMember && currentLang === 'bn') {
+                displayName = committeeBengaliNames[donor.roll] || donor.name;
+            }
+            document.getElementById('detail-name').innerText = displayName;
             
-            let lastDonationText = "রেকর্ড নেই";
+            const batchText = currentLang === 'bn' ? `${translateNumber(donor.session)}তম ব্যাচ` : `${donor.session}th Batch`;
+            document.getElementById('detail-meta').innerText = `${translateDept(donor.department)} • ${batchText}`;
+            document.getElementById('detail-bg').innerText = donor.bloodGroup;
+            document.getElementById('detail-room').innerText = donor.room 
+                ? (currentLang === 'bn' ? translateNumber(donor.room) : donor.room)
+                : (currentLang === 'bn' ? "রেকর্ড নেই" : "No record");
+            document.getElementById('detail-weight').innerText = donor.weight 
+                ? `${currentLang === 'bn' ? translateNumber(donor.weight) : donor.weight} ${currentLang === 'bn' ? 'কেজি' : 'kg'}` 
+                : (currentLang === 'bn' ? "রেকর্ড নেই" : "No record");
+            
+            let lastDonationText = currentLang === 'bn' ? "রেকর্ড নেই" : "No record";
             if (donor.lastDonation) {
                 const lastDate = new Date(donor.lastDonation);
                 const today = new Date();
@@ -2468,18 +2740,19 @@
                 
                 let daysAgoText = "";
                 if (diffDays === 0) {
-                    daysAgoText = "আজকে";
+                    daysAgoText = currentLang === 'bn' ? "আজকে" : "today";
                 } else if (diffDays < 0) {
-                    daysAgoText = "ভবিষ্যতে";
+                    daysAgoText = currentLang === 'bn' ? "ভবিষ্যতে" : "in future";
                 } else {
-                    daysAgoText = `${diffDays} দিন আগে`;
+                    daysAgoText = currentLang === 'bn' ? `${translateNumber(diffDays)} দিন আগে` : `${diffDays} days ago`;
                 }
-                lastDonationText = `${donor.lastDonation} (${daysAgoText})`;
+                const formattedLastDate = currentLang === 'bn' ? translateNumber(donor.lastDonation) : donor.lastDonation;
+                lastDonationText = `${formattedLastDate} (${daysAgoText})`;
             }
             document.getElementById('detail-last-donation').innerText = lastDonationText;
             
             // Set total donations in details modal
-            document.getElementById('detail-total-donations').innerText = `${donor.donorCount} বার`;
+            document.getElementById('detail-total-donations').innerText = `${currentLang === 'bn' ? translateNumber(donor.donorCount) : donor.donorCount} ${currentLang === 'bn' ? 'বার' : 'times'}`;
 
             // Display avatar
             const imageUrl = donor.photo ? `https://pbdb2.duckdns.org/api/files/donors/${donor.id}/${donor.photo}` : null;
@@ -2500,7 +2773,10 @@
             if (!activeDetailedDonor) return;
             
             if (!activeDetailedDonor.id) {
-                triggerToast("এই প্রোফাইলটি ডেটাবেসে নেই, তাই এডিট করা সম্ভব নয়! ⚠️");
+                const editMockFailMsg = currentLang === 'bn' 
+                    ? "এই প্রোফাইলটি ডেটাবেসে নেই, তাই এডিট করা সম্ভব নয়! ⚠️" 
+                    : "This profile is not in the database and cannot be edited! ⚠️";
+                triggerToast(editMockFailMsg);
                 return;
             }
             
@@ -2534,7 +2810,9 @@
             const submitBtn = e.target.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> যাচাই করা হচ্ছে...`;
+            
+            const verifyMsg = currentLang === 'bn' ? `<i class="fa-solid fa-spinner fa-spin mr-1"></i> যাচাই করা হচ্ছে...` : `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Verifying...`;
+            submitBtn.innerHTML = verifyMsg;
 
             try {
                 const rollInput = document.getElementById('edit-verify-roll').value.trim();
@@ -2544,14 +2822,18 @@
                 const freshRecord = await pb.collection('donors').getOne(activeDetailedDonor.id);
 
                 if (freshRecord.roll !== rollInput || freshRecord.registration !== regInput) {
-                    triggerToast("ভুল রোল অথবা রেজিস্ট্রেশন নম্বর! অনুগ্রহ করে সঠিক তথ্য দিন। ⚠️");
+                    const failVerifyMsg = currentLang === 'bn' 
+                        ? "ভুল রোল অথবা রেজিস্ট্রেশন নম্বর! অনুগ্রহ করে সঠিক তথ্য দিন। ⚠️" 
+                        : "Invalid roll or registration number! Please provide correct info. ⚠️";
+                    triggerToast(failVerifyMsg);
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnText;
                     return;
                 }
 
                 // If matched, perform update
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> আপডেট হচ্ছে...`;
+                const updateMsg = currentLang === 'bn' ? `<i class="fa-solid fa-spinner fa-spin mr-1"></i> আপডেট হচ্ছে...` : `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Updating...`;
+                submitBtn.innerHTML = updateMsg;
 
                 const room = document.getElementById('edit-room').value.trim();
                 const session = document.getElementById('edit-session').value;
@@ -2566,7 +2848,10 @@
                 // Conditional Validation
                 if (willing) {
                     if (!phone || phone.trim() === "") {
-                        triggerToast("রক্ত দিতে ইচ্ছুক হলে মোবাইল নম্বর দেওয়া আবশ্যক! ⚠️");
+                        const failPhoneMsg = currentLang === 'bn' 
+                            ? "রক্ত দিতে ইচ্ছুক হলে মোবাইল নম্বর দেওয়া আবশ্যক! ⚠️" 
+                            : "Mobile number is required if you are willing to donate! ⚠️";
+                        triggerToast(failPhoneMsg);
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalBtnText;
                         return;
@@ -2574,7 +2859,10 @@
                 }
 
                 if (!weight) {
-                    triggerToast("ওজন প্রদান করা আবশ্যক! ⚠️");
+                    const failWeightMsg = currentLang === 'bn' 
+                        ? "ওজন প্রদান করা আবশ্যক! ⚠️" 
+                        : "Weight is required! ⚠️";
+                    triggerToast(failWeightMsg);
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnText;
                     return;
@@ -2600,10 +2888,12 @@
                 await pb.collection('donors').update(activeDetailedDonor.id, formData);
 
                 closeModal('edit-donor-modal');
-                triggerToast('তথ্য সফলভাবে আপডেট করা হয়েছে! ❤️');
+                const successMsg = currentLang === 'bn' ? 'তথ্য সফলভাবে আপডেট করা হয়েছে! ❤️' : 'Information updated successfully! ❤️';
+                triggerToast(successMsg);
             } catch (err) {
                 console.error("Donor update failed:", err);
-                triggerToast("আপডেট ব্যর্থ হয়েছে! অনুগ্রহ করে আবার চেষ্টা করুন। ⚠️");
+                const failUpdateMsg = currentLang === 'bn' ? "আপডেট ব্যর্থ হয়েছে! অনুগ্রহ করে আবার চেষ্টা করুন। ⚠️" : "Update failed! Please try again. ⚠️";
+                triggerToast(failUpdateMsg);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
@@ -2645,7 +2935,8 @@
             const roll = document.getElementById('self-search-roll').value.trim();
 
             if (!roll) {
-                triggerToast("রোল নম্বর প্রদান করুন! ⚠️");
+                const enterRollMsg = currentLang === 'bn' ? "রোল নম্বর প্রদান করুন! ⚠️" : "Please provide roll number! ⚠️";
+                triggerToast(enterRollMsg);
                 return;
             }
 
@@ -2665,7 +2956,7 @@
                 // Pre-fill fields
                 document.getElementById('self-edit-id').value = student.id;
                 document.getElementById('self-edit-static-name').innerText = student.name;
-                document.getElementById('self-edit-static-dept').innerText = student.department;
+                document.getElementById('self-edit-static-dept').innerText = translateDept(student.department);
                 document.getElementById('self-edit-bg').value = student.bloodGroup || '';
                 document.getElementById('self-edit-room').value = student.room || '';
                 document.getElementById('self-edit-phone').value = student.phone || '';
@@ -2696,10 +2987,10 @@
             const phoneInput = document.getElementById('self-edit-phone');
             
             if (willingSelect.value === 'true') {
-                phoneLabel.innerText = "মোবাইল নম্বর*";
+                phoneLabel.innerText = currentLang === 'bn' ? "মোবাইল নম্বর*" : "Mobile Number*";
                 phoneInput.required = true;
             } else {
-                phoneLabel.innerText = "মোবাইল নম্বর (ঐচ্ছিক)";
+                phoneLabel.innerText = currentLang === 'bn' ? "মোবাইল নম্বর (ঐচ্ছিক)" : "Mobile Number (Optional)";
                 phoneInput.required = false;
             }
         }
@@ -2721,31 +3012,47 @@
             // Validation
             if (willing) {
                 if (!phone) {
-                    triggerToast("রক্ত দিতে ইচ্ছুক হলে মোবাইল নম্বর দেওয়া আবশ্যক! ⚠️");
+                    const failPhoneMsg = currentLang === 'bn' 
+                        ? "রক্ত দিতে ইচ্ছুক হলে মোবাইল নম্বর দেওয়া আবশ্যক! ⚠️" 
+                        : "Mobile number is required if you are willing to donate! ⚠️";
+                    triggerToast(failPhoneMsg);
                     return;
                 }
                 if (!bg) {
-                    triggerToast("রক্ত দিতে ইচ্ছুক হলে রক্তের গ্রুপ নির্বাচন করা আবশ্যক! ⚠️");
+                    const failBgMsg = currentLang === 'bn' 
+                        ? "রক্ত দিতে ইচ্ছুক হলে রক্তের গ্রুপ নির্বাচন করা আবশ্যক! ⚠️" 
+                        : "Blood group is required if you are willing to donate! ⚠️";
+                    triggerToast(failBgMsg);
                     return;
                 }
             }
 
             if (!weight) {
-                triggerToast("ওজন প্রদান করা আবশ্যক! ⚠️");
+                const failWeightMsg = currentLang === 'bn' 
+                    ? "ওজন প্রদান করা আবশ্যক! ⚠️" 
+                    : "Weight is required! ⚠️";
+                triggerToast(failWeightMsg);
                 return;
             }
 
             const submitBtn = document.getElementById('self-edit-submit-btn');
             const originalBtnText = submitBtn.innerHTML;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> যাচাই ও সংরক্ষণ হচ্ছে...`;
+            
+            const savingMsg = currentLang === 'bn' 
+                ? `<i class="fa-solid fa-spinner fa-spin mr-1"></i> যাচাই ও সংরক্ষণ হচ্ছে...` 
+                : `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Verifying & Saving...`;
+            submitBtn.innerHTML = savingMsg;
 
             try {
                 // Fetch the record from PB to perform security check
                 const freshRecord = await pb.collection('donors').getOne(recordId);
                 
                 if (freshRecord.registration !== verifyReg) {
-                    triggerToast("ভুল রেজিস্ট্রেশন নম্বর! অনুগ্রহ করে সঠিক নম্বর দিন। ⚠️");
+                    const failRegMsg = currentLang === 'bn' 
+                        ? "ভুল রেজিস্ট্রেশন নম্বর! অনুগ্রহ করে সঠিক নম্বর দিন। ⚠️" 
+                        : "Incorrect registration number! Please provide correct number. ⚠️";
+                    triggerToast(failRegMsg);
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnText;
                     return;
@@ -2773,10 +3080,15 @@
                 
                 closeModal('self-update-modal');
                 resetSelfUpdateFlow();
-                triggerToast('তথ্য সফলভাবে সংরক্ষণ ও আপডেট করা হয়েছে! ❤️');
+                
+                const successMsg = currentLang === 'bn' 
+                    ? 'তথ্য সফলভাবে সংরক্ষণ ও আপডেট করা হয়েছে! ❤️' 
+                    : 'Information successfully saved and activated! ❤️';
+                triggerToast(successMsg);
             } catch (err) {
                 console.error("Self update failed:", err);
-                triggerToast("আপডেট ব্যর্থ হয়েছে! অনুগ্রহ করে আবার চেষ্টা করুন। ⚠️");
+                const failMsg = currentLang === 'bn' ? "আপডেট ব্যর্থ হয়েছে! অনুগ্রহ করে আবার চেষ্টা করুন। ⚠️" : "Update failed! Please try again. ⚠️";
+                triggerToast(failMsg);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
@@ -2799,13 +3111,16 @@
                 btn.innerHTML = isDark 
                     ? `<i class="fa-solid fa-sun text-xs text-amber-500"></i>` 
                     : `<i class="fa-solid fa-moon text-xs"></i>`;
-                btn.title = isDark ? "লাইট মুড" : "ডার্ক মুড";
+                btn.title = isDark 
+                    ? (currentLang === 'bn' ? "লাইট মুড" : "Light Mode") 
+                    : (currentLang === 'bn' ? "ডার্ক মুড" : "Dark Mode");
             }
         }
 
         // INITIAL ONBOARDING
         window.onload = function() {
             updateDarkModeButton(document.documentElement.classList.contains('dark'));
+            applyTranslations();
             initPocketBase();
             renderCommittee();
             renderTreasurerReports();
