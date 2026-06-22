@@ -195,6 +195,10 @@
             background-color: rgba(30, 58, 138, 0.15) !important;
             border-color: rgba(59, 130, 246, 0.2) !important;
         }
+        .dark .mobile-sub-nav {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            border-color: rgba(51, 65, 85, 0.4) !important;
+        }
     </style>
 </head>
 <body class="text-slate-800 flex flex-col min-h-screen pb-16 md:pb-0">
@@ -204,42 +208,57 @@
 
     <!-- HEADER NAVBAR (Claude Premium Simple Layout) -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/60 shadow-2xs">
-        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 md:gap-3 min-w-0">
                 <!-- Unit Logo Container -->
-                <div class="w-9 h-9 rounded-xl bg-slate-50 border border-slate-150 p-1 flex items-center justify-center overflow-hidden">
+                <div class="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-slate-50 border border-slate-150 p-1 flex items-center justify-center overflow-hidden shrink-0">
                     <img src="https://i.postimg.cc/K8HSqrm7/badhan.png" alt="Badhan Logo" class="w-full h-full object-contain">
                 </div>
-                <div>
-                    <h1 class="text-xs md:text-sm font-bold text-slate-900 tracking-tight leading-none">
+                <div class="min-w-0">
+                    <h1 class="text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-none truncate">
                         Badhan <span class="text-[#E52229] font-medium">SRJ Hall</span>
                     </h1>
-                    <p class="text-[9px] text-slate-400 font-semibold tracking-wide mt-0.5">
+                    <p class="text-[8px] md:text-[9px] text-slate-400 font-semibold tracking-wide mt-0.5 truncate" data-translate="nav-subtitle">
                         Shahid Rafiq Jabbar Hall Unit
                     </p>
                 </div>
-                <!-- Dark Mode Toggle Button moved to Left/Front -->
-                <button onclick="toggleDarkMode()" id="dark-mode-btn" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition ml-2 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300" title="ডার্ক মুড">
-                    <i class="fa-solid fa-moon text-xs"></i>
-                </button>
             </div>
 
             <!-- Desktop Nav Menu (Simple & Clean) -->
             <nav class="hidden md:flex items-center gap-1">
-                <button onclick="switchTab('home')" id="tab-btn-home" class="px-3 py-1.5 rounded-lg text-xs font-bold text-[#E52229] bg-rose-50 transition">হোম</button>
-                <button onclick="switchTab('directory')" id="tab-btn-directory" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 transition">রক্তদাতা তালিকা</button>
-                <button onclick="switchTab('committee')" id="tab-btn-committee" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 transition">কমিটি</button>
-                <button onclick="switchTab('reports')" id="tab-btn-reports" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 transition">রিপোর্টস</button>
+                <button onclick="switchTab('home')" id="tab-btn-home" class="px-3 py-1.5 rounded-lg text-xs font-bold text-[#E52229] bg-rose-50 dark:bg-rose-950/20 transition" data-translate="nav-home">হোম</button>
+                <button onclick="switchTab('directory')" id="tab-btn-directory" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition" data-translate="nav-directory">রক্তদাতা তালিকা</button>
+                <button onclick="switchTab('committee')" id="tab-btn-committee" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition" data-translate="nav-committee">কমিটি</button>
+                <button onclick="switchTab('reports')" id="tab-btn-reports" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition" data-translate="nav-reports">রিপোর্টস</button>
             </nav>
 
-            <!-- Top Right Action Trigger -->
-            <div class="flex items-center gap-2">
-                <button onclick="openModal('self-update-modal')" class="bg-[#E52229] hover:bg-[#c91d23] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-                    <i class="fa-solid fa-user-pen text-[9px]"></i> তথ্য আপডেট করুন
+            <!-- Top Right Action Trigger & Toggles -->
+            <div class="flex items-center gap-1.5 md:gap-2 shrink-0">
+                <!-- Language Toggle Button -->
+                <button onclick="toggleLanguage()" id="lang-toggle-btn" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-350 text-[10px] font-bold tracking-wider" title="ভাষা পরিবর্তন / Switch Language">
+                    EN
+                </button>
+                <!-- Dark Mode Toggle Button -->
+                <button onclick="toggleDarkMode()" id="dark-mode-btn" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300" title="ডার্ক মুড">
+                    <i class="fa-solid fa-moon text-xs"></i>
+                </button>
+                <!-- Compact Update Button -->
+                <button onclick="openModal('self-update-modal')" class="bg-[#E52229] hover:bg-[#c91d23] text-white px-2.5 py-1.5 md:px-3.5 md:py-1.5 rounded-xl text-[10px] md:text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                    <i class="fa-solid fa-user-pen text-[9px] md:text-[10px]"></i>
+                    <span class="hidden sm:inline" data-translate="nav-update-btn">তথ্য আপডেট করুন</span>
+                    <span class="inline sm:hidden" data-translate="nav-update-btn-mob">আপডেট</span>
                 </button>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Sub-Header Navigation (Visible only on mobile) -->
+    <div class="mobile-sub-nav md:hidden bg-white/95 border-b border-slate-200/60 sticky top-16 z-30 overflow-x-auto scrollbar-none py-2 px-4 flex items-center gap-2 transition">
+        <button onclick="switchTab('home')" id="mobile-subtab-home" class="px-3 py-1.5 rounded-lg text-xs font-bold text-[#E52229] bg-rose-50 dark:bg-rose-950/20 shrink-0 transition" data-translate="nav-home">হোম</button>
+        <button onclick="switchTab('directory')" id="mobile-subtab-directory" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 shrink-0 transition" data-translate="nav-directory">রক্তদাতা তালিকা</button>
+        <button onclick="switchTab('committee')" id="mobile-subtab-committee" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 shrink-0 transition" data-translate="nav-committee">কমিটি</button>
+        <button onclick="switchTab('reports')" id="mobile-subtab-reports" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 shrink-0 transition" data-translate="nav-reports">রিপোর্টস</button>
+    </div>
 
     <!-- MAIN INTERACTIVE WRAPPER -->
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8">
@@ -271,34 +290,32 @@
             <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto w-full">
                 <div class="bg-white p-4 rounded-2xl border border-slate-200/50 card-shadow text-center transform hover:scale-105 transition duration-300">
                     <div id="stat-total-students" class="text-2xl font-extrabold text-slate-955 tracking-tight">--</div>
-                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">মোট শিক্ষার্থী সংখ্যা</div>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1" data-translate="metric-students">মোট শিক্ষার্থী সংখ্যা</div>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-200/50 card-shadow text-center transform hover:scale-105 transition duration-300">
                     <div id="stat-willing-donors" class="text-2xl font-extrabold text-[#E52229] tracking-tight">--</div>
-                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">রক্ত দিতে আগ্রহী</div>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1" data-translate="metric-willing">রক্ত দিতে আগ্রহী</div>
                 </div>
             </div>
-
-
 
             <!-- Simple & Compact Quick Blood Search Widget -->
             <div class="bg-white rounded-2xl border border-slate-200/50 card-shadow p-5 space-y-3">
                 <div>
-                    <h3 class="text-[11px] font-bold text-slate-900 uppercase tracking-wider">রক্তের গ্রুপ সার্চ (Quick Search)</h3>
+                    <h3 class="text-[11px] font-bold text-slate-900 uppercase tracking-wider" data-translate="search-widget-title">রক্তের গ্রুপ সার্চ (Quick Search)</h3>
                 </div>
                 
                 <div class="flex flex-col sm:flex-row gap-2">
                     <div class="relative flex-grow">
                         <select id="quick-bg-select" class="w-full appearance-none bg-slate-50 hover:bg-slate-100/75 border border-slate-200 focus:border-rose-300 text-slate-700 text-xs py-2.5 px-4 rounded-xl outline-none transition cursor-pointer">
-                            <option value="All">সকল গ্রুপের রক্তদাতা</option>
-                            <option value="A+">A+ (এ পজিটিভ)</option>
-                            <option value="A-">A- (এ নেগেটিভ)</option>
-                            <option value="B+">B+ (বি পজিটিভ)</option>
-                            <option value="B-">B- (বি নেগেটিভ)</option>
-                            <option value="O+">O+ (ও পজিটিভ)</option>
-                            <option value="O-">O- (ও নেগেটিভ)</option>
-                            <option value="AB+">AB+ (এবি পজিটিভ)</option>
-                            <option value="AB-">AB- (এবি নেগেটিভ)</option>
+                            <option value="All" data-translate="bg-all">সকল গ্রুপের রক্তদাতা</option>
+                            <option value="A+" data-translate="bg-a-pos">A+ (এ পজিটিভ)</option>
+                            <option value="A-" data-translate="bg-a-neg">A- (এ নেগেটিভ)</option>
+                            <option value="B+" data-translate="bg-b-pos">B+ (বি পজিটিভ)</option>
+                            <option value="B-" data-translate="bg-b-neg">B- (বি নেগেটিভ)</option>
+                            <option value="O+" data-translate="bg-o-pos">O+ (ও পজিটিভ)</option>
+                            <option value="O-" data-translate="bg-o-neg">O- (ও নেগেটিভ)</option>
+                            <option value="AB+" data-translate="bg-ab-pos">AB+ (এবি পজিটিভ)</option>
+                            <option value="AB-" data-translate="bg-ab-neg">AB- (এবি নেগেটিভ)</option>
                         </select>
                         <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[9px]">
                             <i class="fa-solid fa-chevron-down"></i>
@@ -306,7 +323,7 @@
                     </div>
                     <button onclick="triggerQuickSearch()" class="bg-[#E52229] hover:bg-[#c91d23] text-white text-xs font-bold py-2.5 px-6 rounded-xl transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <span>খুঁজুন</span>
+                        <span data-translate="search-btn-text">খুঁজুন</span>
                     </button>
                 </div>
             </div>
@@ -323,12 +340,12 @@
                             <i class="fa-solid fa-circle-info text-[#E52229] text-sm"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] uppercase tracking-[0.12em] font-extrabold text-[#E52229]">আমাদের উদ্দেশ্য</p>
-                            <h3 class="text-xs font-bold text-slate-900 leading-snug">কেন এই প্ল্যাটফর্ম?</h3>
+                            <p class="text-[9px] uppercase tracking-[0.12em] font-extrabold text-[#E52229]" data-translate="purpose-badge">আমাদের উদ্দেশ্য</p>
+                            <h3 class="text-xs font-bold text-slate-900 leading-snug" data-translate="purpose-title">কেন এই প্ল্যাটফর্ম?</h3>
                         </div>
                     </div>
 
-                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                    <p class="text-[11px] text-slate-600 leading-relaxed" data-translate="purpose-p1">
                         রাত ২টায় ফোন আসলো — রক্ত লাগবে, জরুরি। এই মুহূর্তে কার কাছে যাবেন? কোন গ্রুপের রক্ত কার কাছে পাওয়া যাবে? এই প্ল্যাটফর্মটা ঠিক সেই জায়গাটাই সহজ করে দিতে চায়। শহীদ রফিক-জব্বার হলের ছেলেদের রক্তের গ্রুপ, ফোন নম্বর আর ওজনের তথ্য এক জায়গায় থাকলে — দরকারের সময় আর হাতড়াতে হবে না।
                     </p>
 
@@ -336,18 +353,18 @@
                     <div class="bg-rose-50/60 border border-rose-100 rounded-xl p-3.5 space-y-2">
                         <div class="flex items-start gap-2">
                             <i class="fa-solid fa-triangle-exclamation text-[#E52229] text-xs mt-0.5 shrink-0"></i>
-                            <p class="text-[11px] font-semibold text-slate-700 leading-relaxed">
+                            <p class="text-[11px] font-semibold text-slate-700 leading-relaxed" data-translate="purpose-cta">
                                 হলের <span class="text-[#E52229] font-bold">সকল আবাসিক শিক্ষার্থীকে</span> অনুরোধ — রক্ত দিতে চান বা না চান, শুধু আপনার তথ্যটুকু (রক্তের গ্রুপ, মোবাইল নম্বর, ওজন) এখানে আপডেট করে রাখুন।
                             </p>
                         </div>
-                        <p class="text-[10px] text-slate-500 leading-relaxed pl-5">
+                        <p class="text-[10px] text-slate-500 leading-relaxed pl-5" data-translate="purpose-subcta">
                             ভাবুন তো — কাল যদি আপনারই কোনো বন্ধুর রক্ত দরকার হয়, তখন দ্রুত খুঁজে পাওয়া যায় এমন একটা লিস্ট থাকলে কতটা সহজ হতো। আপনার তথ্য আপডেট থাকা মানেই কারো জরুরি মুহূর্তে আপনি পাশে আছেন।
                         </p>
                     </div>
 
                     <button onclick="openModal('self-update-modal')" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
                         <i class="fa-solid fa-user-pen text-[10px]"></i>
-                        <span>এখনই আমার তথ্য আপডেট করুন</span>
+                        <span data-translate="purpose-update-btn">এখনই আমার তথ্য আপডেট করুন</span>
                     </button>
                 </div>
             </div>
@@ -363,12 +380,12 @@
                             <i class="fa-solid fa-heart-pulse text-emerald-600 text-sm"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] uppercase tracking-[0.12em] font-extrabold text-emerald-600">রক্তদান নিয়ে কিছু কথা</p>
-                            <h3 class="text-xs font-bold text-slate-900 leading-snug">ভয় পাওয়ার কিছু নেই — আগে জানুন, তারপর ভাবুন</h3>
+                            <p class="text-[9px] uppercase tracking-[0.12em] font-extrabold text-emerald-600" data-translate="motivation-badge">রক্তদান নিয়ে কিছু কথা</p>
+                            <h3 class="text-xs font-bold text-slate-900 leading-snug" data-translate="motivation-title">ভয় পাওয়ার কিছু নেই — আগে জানুন, তারপর ভাবুন</h3>
                         </div>
                     </div>
 
-                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                    <p class="text-[11px] text-slate-600 leading-relaxed" data-translate="motivation-p1">
                         "রক্ত দিলে শরীর দুর্বল হয়ে যায়" — এটা একটা ভুল ধারণা। বাস্তবে রক্তদান পুরোপুরি নিরাপদ, ১৫-২০ মিনিটের ব্যাপার, আর শরীরের জন্য বরং উপকারী।
                     </p>
 
@@ -378,30 +395,30 @@
                             49+
                         </div>
                         <div>
-                            <p class="text-[11px] font-bold text-slate-800">মাত্র ৫০ কেজি ওজন হলেই রক্ত দেওয়া যায়!</p>
-                            <p class="text-[10px] text-slate-500 mt-0.5">বয়স ১৮–৬০ বছরের মধ্যে এবং সুস্থ থাকলেই যথেষ্ট।</p>
+                            <p class="text-[11px] font-bold text-slate-800" data-translate="motivation-weight-title">মাত্র ৫০ কেজি ওজন হলেই রক্ত দেওয়া যায়!</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5" data-translate="motivation-weight-desc">বয়স ১৮–৬০ বছরের মধ্যে এবং সুস্থ থাকলেই যথেষ্ট।</p>
                         </div>
                     </div>
 
                     <!-- Benefits list -->
                     <div class="space-y-2">
-                        <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">রক্তদানের উপকারিতা</p>
+                        <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider" data-translate="motivation-benefits-title">রক্তদানের উপকারিতা</p>
                         <div class="grid grid-cols-1 gap-1.5">
                             <div class="flex items-start gap-2 bg-slate-50 rounded-xl p-2.5">
                                 <i class="fa-solid fa-shield-heart text-[#E52229] text-xs mt-0.5 shrink-0"></i>
-                                <p class="text-[11px] text-slate-700 leading-snug"><span class="font-semibold">হার্ট ভালো থাকে</span> — রক্ত দিলে শরীরে অতিরিক্ত আয়রন জমে না, হার্ট অ্যাটাকের ঝুঁকি কমে যায়।</p>
+                                <p class="text-[11px] text-slate-700 leading-snug" data-translate="motivation-benefit1"><span class="font-semibold">হার্ট ভালো থাকে</span> — রক্ত দিলে শরীরে অতিরিক্ত আয়রন জমে না, হার্ট অ্যাটাকের ঝুঁকি কমে যায়।</p>
                             </div>
                             <div class="flex items-start gap-2 bg-slate-50 rounded-xl p-2.5">
                                 <i class="fa-solid fa-flask text-emerald-600 text-xs mt-0.5 shrink-0"></i>
-                                <p class="text-[11px] text-slate-700 leading-snug"><span class="font-semibold">ফ্রি হেলথ চেকআপ</span> — রক্ত দেওয়ার আগে ব্লাড গ্রুপ, হিমোগ্লোবিন, প্রেশার সব চেক করে নেওয়া হয়, একদম বিনামূল্যে।</p>
+                                <p class="text-[11px] text-slate-700 leading-snug" data-translate="motivation-benefit2"><span class="font-semibold">ফ্রি হেলথ চেকআপ</span> — রক্ত দেওয়ার আগে ব্লাড গ্রুপ, হিমোগ্লোবিন, প্রেশার সব চেক করে নেওয়া হয়, একদম বিনামূল্যে।</p>
                             </div>
                             <div class="flex items-start gap-2 bg-slate-50 rounded-xl p-2.5">
                                 <i class="fa-solid fa-arrows-rotate text-sky-500 text-xs mt-0.5 shrink-0"></i>
-                                <p class="text-[11px] text-slate-700 leading-snug"><span class="font-semibold">শরীর নিজেই পুরণ করে নেয়</span> — রক্ত দেওয়ার ৪৮ ঘণ্টার মধ্যেই শরীর নতুন রক্ত বানানো শুরু করে দেয়। বরং একটু ফ্রেশ লাগে!</p>
+                                <p class="text-[11px] text-slate-700 leading-snug" data-translate="motivation-benefit3"><span class="font-semibold">শরীর নিজেই পুরণ করে নেয়</span> — রক্ত দেওয়ার ৪৮ ঘণ্টার মধ্যেই শরীর নতুন রক্ত বানানো শুরু করে দেয়। বরং একটু ফ্রেশ লাগে!</p>
                             </div>
                             <div class="flex items-start gap-2 bg-slate-50 rounded-xl p-2.5">
                                 <i class="fa-solid fa-users text-violet-500 text-xs mt-0.5 shrink-0"></i>
-                                <p class="text-[11px] text-slate-700 leading-snug"><span class="font-semibold">একবার দিলে তিনজনের উপকার</span> — আপনার একবার রক্ত দেওয়া থেকে তিনটা আলাদা উপাদান বের করা যায়, যেগুলো তিনজন আলাদা রোগীর কাজে লাগে।</p>
+                                <p class="text-[11px] text-slate-700 leading-snug" data-translate="motivation-benefit4"><span class="font-semibold">একবার দিলে তিনজনের উপকার</span> — আপনার একবার রক্ত দেওয়া থেকে তিনটা আলাদা উপাদান বের করা যায়, যেগুলো তিনজন আলাদা রোগীর কাজে লাগে।</p>
                             </div>
                         </div>
                     </div>
@@ -410,10 +427,10 @@
                     <div class="bg-blue-50/60 border border-blue-100 rounded-xl p-3.5 flex items-start gap-3">
                         <i class="fa-solid fa-comment-dots text-blue-500 text-sm mt-0.5 shrink-0"></i>
                         <div>
-                            <p class="text-[11px] font-bold text-slate-800">কিছু জানার থাকলে জিজ্ঞেস করুন!</p>
-                            <p class="text-[10px] text-slate-500 mt-0.5 leading-relaxed">রক্ত দেওয়া নিয়ে কোনো ভয় বা প্রশ্ন থাকলে কমিটির যেকোনো ভাইয়ের সাথে কথা বলুন। সব রকম সাহায্য করার জন্য আমরা আছি।</p>
+                            <p class="text-[11px] font-bold text-slate-800" data-translate="contact-prompt-title">কিছু জানার থাকলে জিজ্ঞেস করুন!</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5 leading-relaxed" data-translate="contact-prompt-desc">রক্ত দেওয়া নিয়ে কোনো ভয় বা প্রশ্ন থাকলে কমিটির যেকোনো ভাইয়ের সাথে কথা বলুন। সব রকম সাহায্য করার জন্য আমরা আছি।</p>
                             <button onclick="switchTab('committee')" class="mt-2 text-[10px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 transition">
-                                কমিটি দেখুন <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                                <span data-translate="contact-prompt-btn">কমিটি দেখুন</span> <i class="fa-solid fa-arrow-right text-[9px]"></i>
                             </button>
                         </div>
                     </div>
@@ -429,7 +446,7 @@
             
             <div class="text-center max-w-lg mx-auto space-y-0.5">
                 <p class="text-[9px] text-red-600 font-bold uppercase tracking-widest">Directory</p>
-                <h2 class="text-base font-bold text-slate-900">রক্তদাতা তালিকা</h2>
+                <h2 class="text-base font-bold text-slate-900" data-translate="directory-title">রক্তদাতা তালিকা</h2>
             </div>
 
             <!-- Filters -->
@@ -441,13 +458,14 @@
                             type="text" 
                             id="search-query" 
                             oninput="filterDonors()"
+                            data-translate-placeholder="directory-search-placeholder"
                             placeholder="নাম বা রুম নম্বর দিয়ে খুঁজুন..." 
                             class="w-full pl-9 pr-4 py-2 bg-slate-50 focus:bg-white border border-slate-200 focus:border-rose-300 rounded-xl text-xs outline-none transition"
                         >
                     </div>
                     <div class="relative w-full sm:w-44">
                         <select id="blood-group-filter" onchange="filterDonors()" class="w-full appearance-none bg-slate-50 border border-slate-200 focus:border-rose-300 text-slate-700 text-xs py-2 pl-4 pr-8 rounded-xl outline-none transition cursor-pointer">
-                            <option value="All">সব রক্তের গ্রুপ</option>
+                            <option value="All" data-translate="directory-bg-all">সব রক্তের গ্রুপ</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
                             <option value="B+">B+</option>
@@ -466,7 +484,7 @@
                 <div class="flex items-center pt-2 border-t border-slate-100">
                     <label class="inline-flex items-center gap-2 cursor-pointer select-none">
                         <input type="checkbox" id="eligible-only-checkbox" onchange="filterDonors()" class="rounded text-[#E52229] focus:ring-rose-200 border-slate-200 accent-[#E52229] w-4 h-4">
-                        <span class="text-[11px] font-semibold text-slate-500">শুধুমাত্র রক্তদানে প্রস্তুত (Eligible Donors Only)</span>
+                        <span class="text-[11px] font-semibold text-slate-500" data-translate="directory-eligible-only">শুধুমাত্র রক্তদানে প্রস্তুত (Eligible Donors Only)</span>
                     </label>
                 </div>
             </div>
@@ -478,7 +496,7 @@
 
             <div id="directory-empty-state" class="hidden text-center py-10 bg-white rounded-2xl border border-slate-100 p-8 space-y-2">
                 <i class="fa-regular fa-folder-open text-lg text-slate-300"></i>
-                <p class="text-xs text-slate-500">দুঃখিত, কোনো মিল খুঁজে পাওয়া যায়নি।</p>
+                <p class="text-xs text-slate-500" data-translate="directory-empty-state">দুঃখিত, কোনো মিল খুঁজে পাওয়া যায়নি।</p>
             </div>
 
         </section>
@@ -490,7 +508,7 @@
             
             <div class="text-center max-w-lg mx-auto space-y-0.5">
                 <p class="text-[9px] text-red-600 font-bold uppercase tracking-widest">Executive Committee</p>
-                <h2 class="text-base font-bold text-slate-900">কার্যনির্বাহী পরিষদ</h2>
+                <h2 class="text-base font-bold text-slate-900" data-translate="committee-title">নির্বাহী পর্ষদ</h2>
             </div>
 
             <div id="committee-grid" class="space-y-6">
@@ -507,24 +525,24 @@
             <div class="flex items-center justify-between gap-4 border-b border-slate-200 pb-3">
                 <div>
                     <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-wallet text-[#E52229]"></i> কোষাধ্যক্ষের আয়-ব্যয় রিপোর্ট
+                        <i class="fa-solid fa-wallet text-[#E52229]"></i> <span data-translate="reports-title">কোষাধ্যক্ষের আয়-ব্যয় রিপোর্ট</span>
                     </h2>
-                    <p class="text-[10px] text-slate-400 font-semibold tracking-wide mt-1">
+                    <p class="text-[10px] text-slate-400 font-semibold tracking-wide mt-1" data-translate="reports-subtitle">
                         হল ইউনিটের মে ২০২৬ থেকে শুরু হওয়া আয় ও ব্যয়ের মাসভিত্তিক লেজার হিসাব
                     </p>
                 </div>
                 <!-- Treasurer Manage Trigger Button -->
                 <button onclick="promptTreasurerPassword()" class="bg-[#E52229] hover:bg-[#c91d23] text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
                     <i class="fa-solid fa-user-gear"></i>
-                    <span>হিসাব পরিচালনা</span>
+                    <span data-translate="reports-manage-btn">হিসাব পরিচালনা</span>
                 </button>
             </div>
 
             <!-- Dynamic Yearly Reports (Hidden by default, shown when 1 year complete) -->
             <div id="yearly-reports-section" class="hidden space-y-3 mb-6">
                 <div class="border-l-4 border-rose-600 pl-3">
-                    <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200">বাৎসরিক হিসাব বিবরণী (Annual Reports)</h3>
-                    <p class="text-[9px] text-slate-400">পুরো বছরের আয় ও ব্যয়ের সংকলিত বাৎসরিক রিপোর্ট</p>
+                    <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200" data-translate="reports-yearly-title">বাৎসরিক হিসাব বিবরণী (Annual Reports)</h3>
+                    <p class="text-[9px] text-slate-400" data-translate="reports-yearly-subtitle">পুরো বছরের আয় ও ব্যয়ের সংকলিত বাৎসরিক রিপোর্ট</p>
                 </div>
                 <div id="yearly-accordion-container" class="space-y-2">
                     <!-- Populated via JS -->
@@ -537,14 +555,13 @@
             </div>
 
         </section>
-
     </main>
 
     <!-- FOOTER -->
     <footer class="bg-white border-t border-slate-100 py-6 text-center text-[10px] text-slate-400">
         <div class="max-w-4xl mx-auto px-4 space-y-1">
-            <p class="font-bold text-slate-700">বাঁধন, শহীদ রফিক-জব্বার হল ইউনিট</p>
-            <p>জাহাঙ্গীরনগর বিশ্ববিদ্যালয়, সাভার, ঢাকা।</p>
+            <p class="font-bold text-slate-700" data-translate="footer-title">বাঁধন, শহীদ রফিক-জব্বার হল ইউনিট</p>
+            <p data-translate="footer-addr">জাহাঙ্গীরনগর বিশ্ববিদ্যালয়, সাভার, ঢাকা।</p>
             <p class="text-[8px] text-slate-300">© 2026 Badhan. All rights reserved.</p>
         </div>
     </footer>
@@ -576,7 +593,7 @@
     <div id="donor-detail-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden items-end md:items-center justify-center p-0 md:p-4">
         <div class="bg-white w-full md:max-w-md rounded-t-3xl md:rounded-2xl p-6 shadow-2xl border-t md:border border-slate-150 space-y-4 animate-tab-fade">
             <div class="flex items-center justify-between">
-                <span class="bg-rose-50 text-rose-700 text-[9px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">রক্তদাতার বিবরণ</span>
+                <span class="bg-rose-50 text-rose-700 text-[9px] px-3 py-1 rounded-full font-bold uppercase tracking-wider" data-translate="modal-detail-title">রক্তদাতার বিবরণ</span>
                 <button onclick="closeModal('donor-detail-modal')" class="bg-slate-50 hover:bg-slate-100 p-1.5 rounded-full text-slate-400 hover:text-slate-700 transition">
                     <i class="fa-solid fa-xmark text-sm w-4 h-4 flex items-center justify-center"></i>
                 </button>
@@ -593,19 +610,19 @@
 
             <div class="bg-slate-50 rounded-xl p-3.5 divide-y divide-slate-150 text-[11px] text-slate-700 space-y-2">
                 <div class="flex justify-between py-1 pt-0">
-                    <span class="text-slate-400 font-semibold">রুম নম্বর</span>
+                    <span class="text-slate-400 font-semibold" data-translate="label-room">রুম নম্বর</span>
                     <span id="detail-room" class="font-bold text-slate-900">--</span>
                 </div>
                 <div class="flex justify-between py-1.5">
-                    <span class="text-slate-400 font-semibold">ওজন (কেজি)</span>
+                    <span class="text-slate-400 font-semibold" data-translate="label-weight">ওজন (কেজি)</span>
                     <span id="detail-weight" class="font-bold text-slate-900">--</span>
                 </div>
                 <div class="flex justify-between py-1.5">
-                    <span class="text-slate-400 font-semibold">লাস্ট রক্তদান</span>
+                    <span class="text-slate-400 font-semibold" data-translate="label-last-donation">লাস্ট রক্তদান</span>
                     <span id="detail-last-donation" class="font-bold text-slate-900">--</span>
                 </div>
                 <div class="flex justify-between py-1.5">
-                    <span class="text-slate-400 font-semibold">মোট রক্তদান</span>
+                    <span class="text-slate-400 font-semibold" data-translate="label-total-donations">মোট রক্তদান</span>
                     <span id="detail-total-donations" class="font-bold text-slate-900">--</span>
                 </div>
             </div>
@@ -613,11 +630,11 @@
             <div class="pt-1 flex gap-2">
                 <a id="detail-phone-link" href="#" class="flex-grow bg-[#E52229] hover:bg-[#c91d23] text-white text-xs font-bold py-3 rounded-xl shadow-xs text-center flex items-center justify-center gap-1.5 transition">
                     <i class="fa-solid fa-phone text-[10px]"></i>
-                    <span>কল দিন</span>
+                    <span data-translate="btn-call">কল দিন</span>
                 </a>
                 <button onclick="openEditModalFromDetail()" class="px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-1.5 border border-slate-200 shadow-2xs">
                     <i class="fa-solid fa-user-pen text-[10px] text-[#E52229]"></i>
-                    <span>এডিট করুন</span>
+                    <span data-translate="btn-edit">এডিট করুন</span>
                 </button>
             </div>
         </div>
@@ -628,7 +645,7 @@
         <div class="bg-white w-full md:max-w-md rounded-t-3xl md:rounded-2xl p-6 shadow-2xl border-t md:border border-slate-150 space-y-4 max-h-[90vh] overflow-y-auto animate-tab-fade">
             <div class="flex items-center justify-between">
                 <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-pen text-[#E52229]"></i> তথ্য পরিবর্তন করুন
+                    <i class="fa-solid fa-user-pen text-[#E52229]"></i> <span data-translate="modal-edit-title">তথ্য পরিবর্তন করুন</span>
                 </h3>
                 <button onclick="closeModal('edit-donor-modal')" class="bg-slate-50 hover:bg-slate-100 p-1.5 rounded-full text-slate-400 hover:text-slate-700 transition">
                     <i class="fa-solid fa-xmark text-sm w-4 h-4 flex items-center justify-center"></i>
@@ -637,29 +654,29 @@
 
             <!-- Read-only alerts -->
             <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-[10px] text-slate-500 space-y-1">
-                <p>⚠️ নিরাপত্তা স্বার্থে <span class="font-bold text-slate-700">নাম, রক্তের গ্রুপ, রোল</span> এবং <span class="font-bold text-slate-700">রেজিস্ট্রেশন নম্বর</span> পরিবর্তন করা যাবে না। ভুল তথ্য দিয়ে থাকলে অ্যাডমিনের সাথে যোগাযোগ করুন।</p>
+                <p data-translate="modal-edit-warning">⚠️ নিরাপত্তা স্বার্থে <span class="font-bold text-slate-700">নাম, রক্তের গ্রুপ, রোল</span> এবং <span class="font-bold text-slate-700">রেজিস্ট্রেশন নম্বর</span> পরিবর্তন করা যাবে না। ভুল তথ্য দিয়ে থাকলে অ্যাডমিনের সাথে যোগাযোগ করুন।</p>
             </div>
 
             <form onsubmit="handleUpdateDonor(event)" class="space-y-3.5 text-xs">
                 <!-- Static Non-Editable Fields Info -->
                 <div class="grid grid-cols-2 gap-3 bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
                     <div>
-                        <span class="text-[10px] text-slate-400 font-bold block">রক্তদাতার নাম</span>
+                        <span class="text-[10px] text-slate-400 font-bold block" data-translate="label-donor-name">রক্তদাতার নাম</span>
                         <span id="edit-static-name" class="font-bold text-slate-800 text-[11px]">--</span>
                     </div>
                     <div>
-                        <span class="text-[10px] text-slate-400 font-bold block">রক্তের গ্রুপ</span>
+                        <span class="text-[10px] text-slate-400 font-bold block" data-translate="label-blood-group">রক্তের গ্রুপ</span>
                         <span id="edit-static-bg" class="font-bold text-[#E52229] text-[11px]">--</span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">রুম নম্বর</label>
+                        <label class="font-bold text-slate-600" data-translate="label-room">রুম নম্বর</label>
                         <input type="text" id="edit-room" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">ব্যাচ*</label>
+                        <label class="font-bold text-slate-600" data-translate="label-batch">ব্যাচ*</label>
                         <select id="edit-session" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                             <option value="48">48</option>
                             <option value="49">49</option>
@@ -675,43 +692,43 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">বিভাগ*</label>
+                        <label class="font-bold text-slate-600" data-translate="label-dept">বিভাগ*</label>
                         <input type="text" id="edit-dept" required class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">মোবাইল নম্বর*</label>
+                        <label class="font-bold text-slate-600" data-translate="label-phone">মোবাইল নম্বর*</label>
                         <input type="tel" id="edit-phone" required class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">মোট রক্তদান (বার)*</label>
+                        <label class="font-bold text-slate-600" data-translate="label-total-donations-edit">মোট রক্তদান (বার)*</label>
                         <input type="number" id="edit-count" required min="0" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">সর্বশেষ রক্তদান</label>
+                        <label class="font-bold text-slate-600" data-translate="label-last-donation-edit">সর্বশেষ রক্তদান</label>
                         <input type="date" id="edit-last-date" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">রক্ত দিতে ইচ্ছুক?*</label>
+                        <label class="font-bold text-slate-600" data-translate="label-willing">রক্ত দিতে ইচ্ছুক?*</label>
                         <select id="edit-willing" onchange="toggleEditWillingValidation()" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs cursor-pointer">
-                            <option value="true">হ্যাঁ, আমি আগ্রহী</option>
-                            <option value="false">না, ইচ্ছুক না</option>
+                            <option value="true" data-translate="willing-yes">হ্যাঁ, আমি আগ্রহী</option>
+                            <option value="false" data-translate="willing-no">না, ইচ্ছুক না</option>
                         </select>
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">ওজন (কেজি)*</label>
+                        <label class="font-bold text-slate-600" data-translate="label-weight-edit">ওজন (কেজি)*</label>
                         <input type="number" id="edit-weight" required min="30" max="150" placeholder="যেমন: ৭০" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                     </div>
                 </div>
 
                 <div class="space-y-1">
                     <label class="font-bold text-slate-600 flex justify-between">
-                        <span>প্রোফাইল ছবি পরিবর্তন</span>
+                        <span data-translate="label-photo-edit">প্রোফাইল ছবি পরিবর্তন</span>
                         <span class="text-slate-400 font-normal">(ঐচ্ছিক)</span>
                     </label>
                     <input type="file" id="edit-photo" accept="image/*" class="w-full p-1.5 bg-slate-50 border border-slate-200 rounded-xl outline-none text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-rose-50 file:text-[#E52229] hover:file:bg-rose-100">
@@ -719,23 +736,21 @@
 
                 <!-- Verification Fieldset -->
                 <div class="border-t border-dashed border-slate-200 pt-3 space-y-2.5">
-                    <span class="text-[10px] uppercase font-extrabold text-[#E52229] tracking-wider block">নিরাপত্তা যাচাইকরণ</span>
+                    <span class="text-[10px] uppercase font-extrabold text-[#E52229] tracking-wider block" data-translate="verification-title">নিরাপত্তা যাচাইকরণ</span>
                     
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-1">
-                            <label class="font-bold text-slate-600">আপনার রোল নম্বর*</label>
+                            <label class="font-bold text-slate-600" data-translate="label-verify-roll">আপনার রোল নম্বর*</label>
                             <input type="text" id="edit-verify-roll" required placeholder="রোল নম্বর লিখুন" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                         <div class="space-y-1">
-                            <label class="font-bold text-slate-600">রেজিস্ট্রেশন নম্বর*</label>
+                            <label class="font-bold text-slate-600" data-translate="label-verify-reg">রেজিস্ট্রেশন নম্বর*</label>
                             <input type="text" id="edit-verify-reg" required placeholder="রেজিস্ট্রেশন নম্বর লিখুন" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-[#E52229] hover:bg-[#c91d23] text-white font-bold py-2.5 rounded-xl transition shadow-xs text-xs mt-2">
-                    যাচাইপূর্বক তথ্য আপডেট করুন 🛡️
-                </button>
+                <button type="submit" data-translate="btn-verify-update" class="w-full bg-[#E52229] hover:bg-[#c91d23] text-white font-bold py-2.5 rounded-xl transition shadow-xs text-xs mt-2">যাচাইপূর্বক তথ্য আপডেট করুন 🛡️</button>
             </form>
         </div>
     </div>
@@ -834,7 +849,7 @@
         <div class="bg-white w-full md:max-w-md rounded-t-3xl md:rounded-2xl p-6 shadow-2xl border-t md:border border-slate-150 space-y-4 max-h-[90vh] overflow-y-auto animate-tab-fade">
             <div class="flex items-center justify-between border-b border-slate-150 pb-3">
                 <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-check text-[#E52229]"></i> নিজের তথ্য আপডেট প্যানেল
+                    <i class="fa-solid fa-user-check text-[#E52229]"></i> <span data-translate="self-title">নিজের তথ্য আপডেট প্যানেল</span>
                 </h3>
                 <button onclick="closeModal('self-update-modal'); resetSelfUpdateFlow();" class="bg-slate-50 hover:bg-slate-100 p-1.5 rounded-full text-slate-400 hover:text-slate-700 transition">
                     <i class="fa-solid fa-xmark text-sm w-4 h-4 flex items-center justify-center"></i>
@@ -844,12 +859,12 @@
             <!-- STEP 1: Search Form -->
             <div id="self-update-step-search" class="space-y-4">
                 <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-[10px] text-slate-500 space-y-1">
-                    <p>ℹ️ আপনার ব্যাচ এবং রোল নম্বর দিয়ে ডাটাবেসে আপনার প্রাক-সংরক্ষিত তথ্যটি খুঁজে বের করুন।</p>
+                    <p data-translate="self-search-info">ℹ️ আপনার ব্যাচ এবং রোল নম্বর দিয়ে ডাটাবেসে আপনার প্রাক-সংরক্ষিত তথ্যটি খুঁজে বের করুন।</p>
                 </div>
                 
                 <div class="space-y-3.5 text-xs">
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-600">ব্যাচ*</label>
+                        <label class="font-bold text-slate-600" data-translate="label-batch">ব্যাচ*</label>
                         <select id="self-search-batch" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs cursor-pointer">
                             <option value="48">48</option>
                             <option value="49">49</option>
@@ -867,7 +882,7 @@
                     </div>
                     <button onclick="handleSelfSearch()" class="w-full bg-[#E52229] hover:bg-[#c91d23] text-white font-bold py-2.5 rounded-xl transition shadow-xs text-xs flex items-center justify-center gap-1.5">
                         <i class="fa-solid fa-magnifying-glass text-[10px]"></i>
-                        <span>অনুসন্ধান করুন</span>
+                        <span data-translate="btn-search">অনুসন্ধান করুন</span>
                     </button>
                 </div>
             </div>
@@ -878,13 +893,11 @@
                     <i class="fa-solid fa-triangle-exclamation text-3xl"></i>
                 </div>
                 <div class="space-y-1.5">
-                    <h4 class="font-bold text-slate-900 text-xs">কোনো তথ্য পাওয়া যায়নি!</h4>
-                    <p class="text-[10px] text-slate-400 max-w-[280px] mx-auto">তথ্য মিলে নাই। শুধুমাত্র শহীদ রফিক জব্বার হলের শিক্ষার্থীদের ডেটা এন্ট্রি হবে। যদি এরপরও মিসটেক মনে হয়, তবে বাঁধন ইউনিট কমিটির সঙ্গে যোগাযোগ করুন।</p>
+                    <h4 class="font-bold text-slate-900 text-xs" data-translate="self-notfound-title">কোনো তথ্য পাওয়া যায়নি!</h4>
+                    <p class="text-[10px] text-slate-400 max-w-[280px] mx-auto" data-translate="self-notfound-desc">তথ্য মিলে নাই। শুধুমাত্র শহীদ রফিক জব্বার হলের শিক্ষার্থীদের ডেটা এন্ট্রি হবে। যদি এরপরও মিসটেক মনে হয়, তবে বাঁধন ইউনিট কমিটির সঙ্গে যোগাযোগ করুন।</p>
                 </div>
                 <div class="pt-2 flex flex-col gap-2">
-                    <button onclick="resetSelfUpdateFlow()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs">
-                        আবার অনুসন্ধান করুন 🔄
-                    </button>
+                    <button onclick="resetSelfUpdateFlow()" data-translate="btn-search-again" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs">আবার অনুসন্ধান করুন 🔄</button>
                 </div>
             </div>
 
@@ -894,32 +907,28 @@
                     <i class="fa-solid fa-circle-check text-3xl"></i>
                 </div>
                 <div class="space-y-1.5">
-                    <h4 class="font-bold text-slate-900 text-xs">তথ্য ইতিমধ্যে আপডেট করা হয়েছে!</h4>
-                    <p class="text-[10px] text-slate-400 max-w-[280px] mx-auto">আপনার প্রোফাইলটি ইতিমধ্যে সক্রিয় ও আপডেট করা আছে। নতুন করে পুনরায় তথ্য পরিবর্তন করতে চাইলে রক্তদাতা তালিকায় গিয়ে আপনার কার্ডে ক্লিক করে "এডিট করুন" বাটন ব্যবহার করুন।</p>
+                    <h4 class="font-bold text-slate-900 text-xs" data-translate="self-already-title">তথ্য ইতিমধ্যে আপডেট করা হয়েছে!</h4>
+                    <p class="text-[10px] text-slate-400 max-w-[280px] mx-auto" data-translate="self-already-desc">আপনার প্রোফাইলটি ইতিমধ্যে সক্রিয় ও আপডেট করা আছে। নতুন করে পুনরায় তথ্য পরিবর্তন করতে চাইলে রক্তদাতা তালিকায় গিয়ে আপনার কার্ডে ক্লিক করে "এডিট করুন" বাটন ব্যবহার করুন।</p>
                 </div>
                 <div class="pt-2 flex flex-col gap-2">
-                    <button onclick="closeModal('self-update-modal'); resetSelfUpdateFlow(); switchTab('directory');" class="w-full bg-[#E52229] hover:bg-[#c91d23] text-white font-bold py-2.5 rounded-xl transition text-xs">
-                        রক্তদাতা তালিকায় যান 📋
-                    </button>
-                    <button onclick="resetSelfUpdateFlow()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs">
-                        অন্য রোল অনুসন্ধান করুন 🔄
-                    </button>
+                    <button onclick="closeModal('self-update-modal'); resetSelfUpdateFlow(); switchTab('directory');" data-translate="btn-go-to-directory" class="w-full bg-[#E52229] hover:bg-[#c91d23] text-white font-bold py-2.5 rounded-xl transition text-xs">রক্তদাতা তালিকায় যান 📋</button>
+                    <button onclick="resetSelfUpdateFlow()" data-translate="btn-search-other" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs">অন্য রোল অনুসন্ধান করুন 🔄</button>
                 </div>
             </div>
 
             <!-- STEP 3: Edit Form (For pre-entered students) -->
             <div id="self-update-step-edit" class="hidden">
                 <div class="bg-rose-50/50 border border-rose-100 rounded-xl p-3 text-[10px] text-slate-500 space-y-1 mb-3">
-                    <p>✔️ শিক্ষার্থী সনাক্ত করা গেছে। আপনার বিবরণীটি পূরণ করে প্রোফাইলটি সক্রিয় করুন।</p>
+                    <p data-translate="self-edit-info">✔️ শিক্ষার্থী সনাক্ত করা গেছে। আপনার বিবরণীটি পূরণ করে প্রোফাইলটি সক্রিয় করুন।</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3 bg-slate-50/70 p-3 rounded-xl border border-slate-100 mb-3 text-xs">
                     <div>
-                        <span class="text-[9px] text-slate-400 font-bold block">নাম</span>
+                        <span class="text-[9px] text-slate-400 font-bold block" data-translate="label-name-caps">নাম</span>
                         <span id="self-edit-static-name" class="font-bold text-slate-800 text-[11px]">--</span>
                     </div>
                     <div>
-                        <span class="text-[9px] text-slate-400 font-bold block">বিভাগ</span>
+                        <span class="text-[9px] text-slate-400 font-bold block" data-translate="label-dept-caps">বিভাগ</span>
                         <span id="self-edit-static-dept" class="font-bold text-slate-800 text-[11px]">--</span>
                     </div>
                 </div>
@@ -931,7 +940,7 @@
                         <div class="space-y-1">
                             <label class="font-bold text-slate-600">রক্তের গ্রুপ*</label>
                             <select id="self-edit-bg" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs cursor-pointer">
-                                <option value="">নির্বাচন করুন</option>
+                                <option value="" data-translate="select-option">নির্বাচন করুন</option>
                                 <option value="A+">A+</option>
                                 <option value="A-">A-</option>
                                 <option value="B+">B+</option>
@@ -943,21 +952,21 @@
                             </select>
                         </div>
                         <div class="space-y-1">
-                            <label class="font-bold text-slate-600">রুম নম্বর</label>
+                            <label class="font-bold text-slate-600" data-translate="label-room">রুম নম্বর</label>
                             <input type="text" id="self-edit-room" placeholder="যেমন: ৩১২" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-1">
-                            <label class="font-bold text-slate-600">রক্ত দিতে ইচ্ছুক?*</label>
+                            <label class="font-bold text-slate-600" data-translate="label-willing">রক্ত দিতে ইচ্ছুক?*</label>
                             <select id="self-edit-willing" onchange="toggleSelfWillingValidation()" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs cursor-pointer">
-                                <option value="true">হ্যাঁ, আমি আগ্রহী</option>
-                                <option value="false">না, ইচ্ছুক না</option>
+                                <option value="true" data-translate="willing-yes">হ্যাঁ, আমি আগ্রহী</option>
+                                <option value="false" data-translate="willing-no">না, ইচ্ছুক না</option>
                             </select>
                         </div>
                         <div class="space-y-1">
-                            <label id="self-edit-phone-label" class="font-bold text-slate-600">মোবাইল নম্বর*</label>
+                            <label id="self-edit-phone-label" class="font-bold text-slate-600" data-translate="label-phone-star">মোবাইল নম্বর*</label>
                             <input type="tel" id="self-edit-phone" placeholder="যেমন: +88017XXXXXXXX" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                     </div>
@@ -968,19 +977,19 @@
                             <input type="number" id="self-edit-count" min="0" value="0" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                         <div class="space-y-1">
-                            <label class="font-bold text-slate-600">সর্বশেষ রক্তদান</label>
+                            <label class="font-bold text-slate-600" data-translate="label-last-donation-edit">সর্বশেষ রক্তদান</label>
                             <input type="date" id="self-edit-last-date" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-1">
-                            <label class="font-bold text-slate-600">ওজন (কেজি)*</label>
+                            <label class="font-bold text-slate-600" data-translate="label-weight-edit">ওজন (কেজি)*</label>
                             <input type="number" id="self-edit-weight" required min="30" max="150" placeholder="যেমন: ৭০" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                         <div class="space-y-1">
                             <label class="font-bold text-slate-600 flex justify-between">
-                                <span>প্রোফাইল ছবি</span>
+                                <span data-translate="label-photo-self">প্রোফাইল ছবি</span>
                                 <span class="text-slate-400 font-normal">(ঐচ্ছিক)</span>
                             </label>
                             <input type="file" id="self-edit-photo" accept="image/*" class="w-full p-1.5 bg-slate-50 border border-slate-200 rounded-xl outline-none text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-rose-50 file:text-[#E52229] hover:file:bg-rose-100">
@@ -989,16 +998,14 @@
 
                     <!-- Security Verification -->
                     <div class="border-t border-dashed border-slate-200 pt-3 space-y-2">
-                        <span class="text-[10px] uppercase font-extrabold text-[#E52229] tracking-wider block">নিরাপত্তা যাচাইকরণ</span>
+                        <span class="text-[10px] uppercase font-extrabold text-[#E52229] tracking-wider block" data-translate="verification-title">নিরাপত্তা যাচাইকরণ</span>
                         <div class="space-y-1">
-                            <label class="font-bold text-slate-600">আপনার রেজিস্ট্রেশন নম্বর দিন*</label>
+                            <label class="font-bold text-slate-600" data-translate="label-verify-reg-self">আপনার রেজিস্ট্রেশন নম্বর দিন*</label>
                             <input type="text" id="self-edit-verify-reg" required placeholder="রেজিস্ট্রেশন নম্বর লিখুন" class="w-full p-2.5 bg-slate-50 border border-slate-200 focus:bg-white rounded-xl outline-none text-xs">
                         </div>
                     </div>
 
-                    <button type="submit" id="self-edit-submit-btn" class="w-full bg-[#E52229] hover:bg-[#c91d23] text-white font-bold py-2.5 rounded-xl transition shadow-xs text-xs mt-2">
-                        তথ্য সংরক্ষণ ও সক্রিয় করুন ❤️
-                    </button>
+                    <button type="submit" id="self-edit-submit-btn" data-translate="btn-save-activate" class="w-full bg-[#E52229] hover:bg-[#c91d23] text-white font-bold py-2.5 rounded-xl transition shadow-xs text-xs mt-2">তথ্য সংরক্ষণ ও সক্রিয় করুন ❤️</button>
                 </form>
             </div>
         </div>
