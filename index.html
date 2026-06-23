@@ -555,6 +555,27 @@
             </div>
 
         </section>
+
+        <!-- Admin Contact Helper Section -->
+        <section class="mt-8 bg-white dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-5 card-shadow flex flex-col sm:flex-row items-center justify-between gap-4 transition duration-150 animate-tab-fade">
+            <div class="flex items-center gap-3 text-center sm:text-left">
+                <div class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/20 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-circle-question text-[#E52229] text-base"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 text-left" data-translate="bottom-contact-title">নিজের তথ্য সংশোধন বা সাহায্য লাগবে?</h4>
+                    <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 text-left" data-translate="bottom-contact-subtitle">নিজের যেকোনো তথ্য পরিবর্তন বা সংশোধন করতে অসুবিধা হলে অ্যাডমিনের সাথে যোগাযোগ করুন।</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 text-xs w-full sm:w-auto justify-center sm:justify-end shrink-0">
+                <a href="https://wa.me/8801518404858" target="_blank" class="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl transition shadow-xs text-[10px]">
+                    <i class="fa-brands fa-whatsapp text-xs animate-pulse"></i> WhatsApp
+                </a>
+                <a href="mailto:bumblebee9171@gmail.com" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-200 font-bold px-3.5 py-2 rounded-xl transition border border-slate-200 dark:border-slate-600 shadow-2xs text-[10px]">
+                    <i class="fa-regular fa-envelope text-xs"></i> Email
+                </a>
+            </div>
+        </section>
     </main>
 
     <!-- FOOTER -->
@@ -894,7 +915,17 @@
                 </div>
                 <div class="space-y-1.5">
                     <h4 class="font-bold text-slate-900 text-xs" data-translate="self-notfound-title">কোনো তথ্য পাওয়া যায়নি!</h4>
-                    <p class="text-[10px] text-slate-400 max-w-[280px] mx-auto" data-translate="self-notfound-desc">তথ্য মিলে নাই। শুধুমাত্র শহীদ রফিক জব্বার হলের শিক্ষার্থীদের ডেটা এন্ট্রি হবে। যদি এরপরও মিসটেক মনে হয়, তবে বাঁধন ইউনিট কমিটির সঙ্গে যোগাযোগ করুন।</p>
+                    <p class="text-[10px] text-slate-400 max-w-[280px] mx-auto" data-translate="self-notfound-desc">তথ্য মিলে নাই। শুধুমাত্র শহীদ রফিক জব্বার হলের শিক্ষার্থীদের ডেটা এন্ট্রি হবে। যদি আপনি শহীদ রফিক জব্বার হলের আবাসিক শিক্ষার্থী হয়ে থাকেন এবং ডেটা না পাওয়া যায় তাহলে দয়া করে অ্যাডমিন এর সঙ্গে WhatsApp এর মাধ্যমে যোগাযোগ করুন।</p>
+                </div>
+                <!-- Contact admin links -->
+                <div class="flex items-center justify-center gap-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700/60 p-2.5 rounded-xl max-w-[280px] mx-auto text-[10px] text-slate-500">
+                    <a href="https://wa.me/8801518404858" target="_blank" class="flex items-center gap-1 text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-bold transition">
+                        <i class="fa-brands fa-whatsapp text-xs animate-pulse"></i> <span data-translate="self-contact-whatsapp">WhatsApp-এ যোগাযোগ</span>
+                    </a>
+                    <div class="h-3 w-[1px] bg-slate-200 dark:bg-slate-700"></div>
+                    <a href="mailto:bumblebee9171@gmail.com" class="flex items-center gap-1 text-slate-650 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-350 font-bold transition">
+                        <i class="fa-regular fa-envelope text-xs"></i> <span data-translate="self-contact-email">ইমেইল</span>
+                    </a>
                 </div>
                 <div class="pt-2 flex flex-col gap-2">
                     <button onclick="resetSelfUpdateFlow()" data-translate="btn-search-again" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs">আবার অনুসন্ধান করুন 🔄</button>
@@ -920,6 +951,20 @@
             <div id="self-update-step-edit" class="hidden">
                 <div class="bg-rose-50/50 border border-rose-100 rounded-xl p-3 text-[10px] text-slate-500 space-y-1 mb-3">
                     <p data-translate="self-edit-info">✔️ শিক্ষার্থী সনাক্ত করা গেছে। আপনার বিবরণীটি পূরণ করে প্রোফাইলটি সক্রিয় করুন।</p>
+                </div>
+
+                <!-- Info correction alert -->
+                <div class="bg-slate-50 border border-slate-200/60 dark:border-slate-700/60 rounded-xl p-3 text-[10px] text-slate-500 space-y-2 mb-3">
+                    <p data-translate="self-edit-basic-error">ℹ️ আপনার নাম, রেজিস্ট্রেশন বা বিভাগের মতো বেসিক তথ্য ভুল দেখতে পেলে অ্যাডমিনের সাথে যোগাযোগ করুন:</p>
+                    <div class="flex items-center gap-3 text-[10px]">
+                        <a href="https://wa.me/8801518404858" target="_blank" class="flex items-center gap-1 text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-bold transition">
+                            <i class="fa-brands fa-whatsapp text-xs animate-pulse"></i> <span data-translate="self-contact-whatsapp">WhatsApp-এ যোগাযোগ</span>
+                        </a>
+                        <div class="h-3 w-[1px] bg-slate-200 dark:bg-slate-700"></div>
+                        <a href="mailto:bumblebee9171@gmail.com" class="flex items-center gap-1 text-slate-650 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-350 font-bold transition">
+                            <i class="fa-regular fa-envelope text-xs"></i> <span data-translate="self-contact-email">ইমেইল</span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3 bg-slate-50/70 p-3 rounded-xl border border-slate-100 mb-3 text-xs">
@@ -1103,7 +1148,7 @@
                 'self-search-info': 'ℹ️ আপনার ব্যাচ এবং রোল নম্বর দিয়ে ডাটাবেসে আপনার প্রাক-সংরক্ষিত তথ্যটি খুঁজে বের করুন।',
                 'btn-search': 'অনুসন্ধান করুন',
                 'self-notfound-title': 'কোনো তথ্য পাওয়া যায়নি!',
-                'self-notfound-desc': 'তথ্য মিলে নাই। শুধুমাত্র শহীদ রফিক জব্বার হলের শিক্ষার্থীদের ডেটা এন্ট্রি হবে। যদি এরপরও মিসটেক মনে হয়, তবে বাঁধন ইউনিট কমিটির সঙ্গে যোগাযোগ করুন।',
+                'self-notfound-desc': 'তথ্য মিলে নাই। শুধুমাত্র শহীদ রফিক জব্বার হলের শিক্ষার্থীদের ডেটা এন্ট্রি হবে। যদি আপনি শহীদ রফিক জব্বার হলের আবাসিক শিক্ষার্থী হয়ে থাকেন এবং ডেটা না পাওয়া যায় তাহলে দয়া করে অ্যাডমিন এর সঙ্গে WhatsApp এর মাধ্যমে যোগাযোগ করুন।',
                 'btn-search-again': 'আবার অনুসন্ধান করুন 🔄',
                 'self-already-title': 'তথ্য ইতিমধ্যে আপডেট করা হয়েছে!',
                 'self-already-desc': 'আপনার প্রোফাইলটি ইতিমধ্যে সক্রিয় ও আপডেট করা আছে। নতুন করে পুনরায় তথ্য পরিবর্তন করতে চাইলে রক্তদাতা তালিকায় গিয়ে আপনার কার্ডে ক্লিক করে "এডিট করুন" বাটন ব্যবহার করুন।',
@@ -1116,6 +1161,11 @@
                 'label-phone-star': 'মোবাইল নম্বর*',
                 'label-photo-self': 'প্রোফাইল ছবি',
                 'label-verify-reg-self': 'আপনার রেজিস্ট্রেশন নম্বর দিন*',
+                'self-edit-basic-error': 'ℹ️ আপনার নাম, রেজিস্ট্রেশন বা বিভাগের মতো বেসিক তথ্য ভুল দেখতে পেলে অ্যাডমিনের সাথে যোগাযোগ করুন:',
+                'self-contact-whatsapp': 'WhatsApp-এ যোগাযোগ',
+                'self-contact-email': 'ইমেইল',
+                'bottom-contact-title': 'নিজের তথ্য সংশোধন বা সাহায্য লাগবে?',
+                'bottom-contact-subtitle': 'নিজের যেকোনো তথ্য পরিবর্তন বা সংশোধন করতে অসুবিধা হলে অ্যাডমিনের সাথে যোগাযোগ করুন।',
                 'btn-save-activate': 'তথ্য সংরক্ষণ ও সক্রিয় করুন ❤️'
             },
             en: {
@@ -1196,7 +1246,7 @@
                 'self-search-info': 'ℹ️ Find your pre-registered record using Batch and Roll.',
                 'btn-search': 'Search',
                 'self-notfound-title': 'No Information Found!',
-                'self-notfound-desc': 'No record matches. Only students of Shahid Rafiq Jabbar Hall can register. If you believe this is an error, contact the committee.',
+                'self-notfound-desc': 'No record matches. Only students of Shahid Rafiq Jabbar Hall can register. If you are a resident student of Shahid Rafiq Jabbar Hall and your data is not found, please contact the admin via WhatsApp.',
                 'btn-search-again': 'Search Again 🔄',
                 'self-already-title': 'Profile Already Updated!',
                 'self-already-desc': 'Your profile is already active. To change details, find your card in the Directory and click the "Edit Info" button.',
@@ -1209,6 +1259,11 @@
                 'label-phone-star': 'Mobile Number*',
                 'label-photo-self': 'Profile Photo',
                 'label-verify-reg-self': 'Enter your Registration Number*',
+                'self-edit-basic-error': 'ℹ️ If you think basic info like name, registration, or department is incorrect, contact the admin:',
+                'self-contact-whatsapp': 'Contact via WhatsApp',
+                'self-contact-email': 'Email',
+                'bottom-contact-title': 'Need help or info correction?',
+                'bottom-contact-subtitle': 'If you face difficulties changing or correcting any information, you can contact the admin.',
                 'btn-save-activate': 'Save and Activate Profile ❤️'
             }
         };
