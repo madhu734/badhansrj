@@ -518,40 +518,219 @@
         </section>
 
         <!-- ==========================================
-             REPORTS TAB (Redesigned: Dynamic Income-Expense Ledger)
+             REPORTS TAB (Dual Panel: Organizational & Treasurer)
              ========================================== -->
-        <section id="tab-reports" class="space-y-5 hidden animate-tab-fade">
+        <section id="tab-reports" class="space-y-6 hidden animate-tab-fade">
             
-            <div class="flex items-center justify-between gap-4 border-b border-slate-200 pb-3">
-                <div>
-                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-wallet text-[#E52229]"></i> <span data-translate="reports-title">কোষাধ্যক্ষের আয়-ব্যয় রিপোর্ট</span>
-                    </h2>
-                    <p class="text-[10px] text-slate-400 font-semibold tracking-wide mt-1" data-translate="reports-subtitle">
-                        হল ইউনিটের মে ২০২৬ থেকে শুরু হওয়া আয় ও ব্যয়ের মাসভিত্তিক লেজার হিসাব
-                    </p>
+            <!-- SUB-TAB SEGMENTED CONTROLLER -->
+            <div class="flex items-center justify-between flex-wrap gap-3 pb-3 border-b border-slate-200/70 dark:border-slate-700/70">
+                <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-800/90 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-2xs">
+                    <button id="rep-cat-executive" onclick="switchReportCategory('executive')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-white dark:bg-slate-700 text-[#E52229] shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-chart-pie text-xs"></i>
+                        <span data-translate="rep-subtab-org">সাংগঠনিক রিপোর্ট</span>
+                    </button>
+                    <button id="rep-cat-treasurer" onclick="switchReportCategory('treasurer')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer">
+                        <i class="fa-solid fa-wallet text-xs"></i>
+                        <span data-translate="rep-subtab-treasurer">কোষাধ্যক্ষের রিপোর্ট</span>
+                    </button>
                 </div>
-                <!-- Treasurer Manage Trigger Button -->
-                <button onclick="promptTreasurerPassword()" class="bg-[#E52229] hover:bg-[#c91d23] text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
-                    <i class="fa-solid fa-user-gear"></i>
-                    <span data-translate="reports-manage-btn">হিসাব পরিচালনা</span>
-                </button>
-            </div>
-
-            <!-- Dynamic Yearly Reports (Hidden by default, shown when 1 year complete) -->
-            <div id="yearly-reports-section" class="hidden space-y-3 mb-6">
-                <div class="border-l-4 border-rose-600 pl-3">
-                    <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200" data-translate="reports-yearly-title">বাৎসরিক হিসাব বিবরণী (Annual Reports)</h3>
-                    <p class="text-[9px] text-slate-400" data-translate="reports-yearly-subtitle">পুরো বছরের আয় ও ব্যয়ের সংকলিত বাৎসরিক রিপোর্ট</p>
-                </div>
-                <div id="yearly-accordion-container" class="space-y-2">
-                    <!-- Populated via JS -->
+                
+                <!-- Sync status badge -->
+                <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 px-3 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/40">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span data-translate="rep-sync-live">লাইভ ডাটাবেস সিঙ্কড</span>
                 </div>
             </div>
 
-            <!-- Dynamic Month-wise Accordions Container -->
-            <div class="space-y-3" id="treasurer-accordion">
-                <!-- Dynamically populated via JS -->
+            <!-- ==========================================
+                 PANEL 1: ORGANIZATIONAL REPORT (সাংগঠনিক রিপোর্ট)
+                 ========================================== -->
+            <div id="reports-executive-panel" class="space-y-6 animate-tab-fade">
+                
+                <!-- Panel Header & PDF Download Button -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow">
+                    <div class="space-y-1">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-[#E52229] dark:bg-rose-950/30 dark:text-rose-400 border border-rose-100 dark:border-rose-900/40">
+                            <i class="fa-solid fa-chart-line text-[9px]"></i>
+                            <span data-translate="rep-org-badge">সাংগঠনিক প্রতিবেদন</span>
+                        </span>
+                        <h2 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100" data-translate="rep-org-title">
+                            ইউনিট সাংগঠনিক প্রতিবেদন ও রক্তদাতা পরিসংখ্যান
+                        </h2>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed" data-translate="rep-org-subtitle">
+                            শহীদ রফিক-জব্বার হল ইউনিটের বর্তমান সাংগঠনিক অবস্থান, রক্তদাতা সক্রিয়তা ও গ্রুপভিত্তিক পূর্ণাঙ্গ বিবরণ
+                        </p>
+                    </div>
+                    <button onclick="downloadOrganizationalPDF()" class="shrink-0 w-full sm:w-auto bg-slate-900 hover:bg-slate-800 dark:bg-[#E52229] dark:hover:bg-[#c91d23] text-white text-[11px] font-bold px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-file-pdf text-rose-400 dark:text-white text-xs"></i>
+                        <span data-translate="rep-org-download-btn">অফিসিয়াল রিপোর্ট ডাউনলোড (PDF)</span>
+                    </button>
+                </div>
+
+                <!-- 4 KPI Metrics Grid -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <!-- Total Students -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-400 uppercase tracking-wider" data-translate="rep-metric-total">মোট শিক্ষার্থী সংখ্যা</span>
+                            <div class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+                        <div id="org-stat-total" class="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">--</div>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">হলে তালিকাভুক্ত আবাসিক ছাত্র</p>
+                    </div>
+
+                    <!-- Willing Donors -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-400 uppercase tracking-wider" data-translate="rep-metric-willing">রক্তদানে আগ্রহী</span>
+                            <div class="w-7 h-7 rounded-lg bg-rose-50 dark:bg-rose-950/30 text-[#E52229] dark:text-rose-400 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-hand-holding-heart"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                            <div id="org-stat-willing" class="text-2xl font-extrabold text-[#E52229] tracking-tight">--</div>
+                            <span id="org-stat-willing-pct" class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-rose-50 text-[#E52229] dark:bg-rose-950/40 dark:text-rose-400">--%</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">রক্ত দিতে সম্মত রক্তদাতা</p>
+                    </div>
+
+                    <!-- Completed Donations -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-400 uppercase tracking-wider" data-translate="rep-metric-donations">সম্পন্ন রক্তদান</span>
+                            <div class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                        </div>
+                        <div id="org-stat-donations" class="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">--</div>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">সদস্যদের মোট রক্তদান রেকর্ড</p>
+                    </div>
+
+                    <!-- Immediately Ready Donors -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-400 uppercase tracking-wider" data-translate="rep-metric-ready">তাৎক্ষণিক প্রস্তুত</span>
+                            <div class="w-7 h-7 rounded-lg bg-teal-50 dark:bg-teal-950/30 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                            </div>
+                        </div>
+                        <div id="org-stat-ready" class="text-2xl font-extrabold text-teal-600 dark:text-teal-400 tracking-tight">--</div>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium" data-translate="rep-metric-ready-desc">৩+ মাস অতিক্রান্ত ও ইচ্ছুক</p>
+                    </div>
+                </div>
+
+                <!-- Blood Group Matrix Section -->
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow space-y-4">
+                    <div class="border-b border-slate-100 dark:border-slate-700/60 pb-3">
+                        <h3 class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2" data-translate="rep-bg-matrix-title">
+                            <i class="fa-solid fa-dna text-[#E52229]"></i> রক্তের গ্রুপভিত্তিক পরিসংখ্যান ও প্রাপ্যতা
+                        </h3>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5" data-translate="rep-bg-matrix-sub">
+                            প্রতিটি রক্তের গ্রুপের মোট সদস্য, আগ্রহী ডোনার এবং এ পর্যন্ত সম্পন্ন রক্তদানের সংখ্যা
+                        </p>
+                    </div>
+                    <div id="org-bg-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <!-- Populated dynamically via renderOrganizationalReports -->
+                    </div>
+                </div>
+
+                <!-- Batch & Department Analytics Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- Batch Analysis Card -->
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow space-y-3">
+                        <div class="border-b border-slate-100 dark:border-slate-700/60 pb-2.5 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2" data-translate="rep-batch-matrix-title">
+                                    <i class="fa-solid fa-graduation-cap text-[#E52229]"></i> ব্যাচভিত্তিক সক্রিয়তা ও অংশগ্রহণ
+                                </h3>
+                                <p class="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5" data-translate="rep-batch-matrix-sub">
+                                    বিভিন্ন ব্যাচের শিক্ষার্থীদের অংশগ্রহণ
+                                </p>
+                            </div>
+                        </div>
+                        <div id="org-batch-table-container" class="overflow-x-auto">
+                            <!-- Dynamic batch table -->
+                        </div>
+                    </div>
+
+                    <!-- Department Analysis Card -->
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow space-y-3">
+                        <div class="border-b border-slate-100 dark:border-slate-700/60 pb-2.5">
+                            <h3 class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2" data-translate="rep-dept-matrix-title">
+                                <i class="fa-solid fa-building-columns text-[#E52229]"></i> বিভাগভিত্তিক রক্তদাতা বিন্যাস (শীর্ষ বিভাগসমূহ)
+                            </h3>
+                            <p class="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">
+                                কোন বিভাগের কতজন শিক্ষার্থী রক্তদানে অন্তর্ভুক্ত রয়েছে
+                            </p>
+                        </div>
+                        <div id="org-dept-table-container" class="space-y-2.5">
+                            <!-- Dynamic department ranking -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Organizational Commitments & Notice Card -->
+                <div class="bg-gradient-to-br from-rose-50/50 to-orange-50/30 dark:from-rose-950/20 dark:to-slate-800 border border-rose-100/80 dark:border-rose-900/30 p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-slate-100">
+                        <i class="fa-solid fa-bullseye text-[#E52229]"></i>
+                        <span data-translate="rep-org-goals-title">হল ইউনিটের সাংগঠনিক লক্ষ্য ও অঙ্গীকার</span>
+                    </div>
+                    <ul class="text-[11px] text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside leading-relaxed">
+                        <li>শহীদ রফিক-জব্বার হলের যেকোনো আবাসিক ছাত্র বা তাদের পরিবারের জরুরি রক্তের প্রয়োজনে সর্বোচ্চ দ্রুততায় রক্তদাতা নিশ্চিতকরণ।</li>
+                        <li>নবীন শিক্ষার্থীদের স্বেচ্ছায় রক্তদানে উদ্বুদ্ধকরণ এবং রক্তদান সংক্রান্ত সকল অন্ধবিশ্বাস ও ভীতি দূর করা।</li>
+                        <li>হল ইউনিটের আয়-ব্যয়ের স্বচ্ছ হিসাব সর্বসাধারণের জন্য উন্মুক্ত রাখা এবং নিয়মিত ডাটাবেস হালনাগাদ রাখা।</li>
+                    </ul>
+                    <div class="pt-1 flex items-center justify-between flex-wrap gap-2">
+                        <span class="text-[10px] text-slate-400 dark:text-slate-500 italic">"একের রক্ত অন্যের জীবন, রক্তই হোক আত্মার বাঁধন"</span>
+                        <button onclick="switchTab('committee')" class="text-[11px] font-bold text-[#E52229] hover:underline flex items-center gap-1 cursor-pointer">
+                            <span>কার্যনির্বাহী পরিষদ দেখুন</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ==========================================
+                 PANEL 2: TREASURER REPORT (কোষাধ্যক্ষের রিপোর্ট)
+                 ========================================== -->
+            <div id="reports-treasurer-panel" class="space-y-5 hidden animate-tab-fade">
+                
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 card-shadow">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                            <i class="fa-solid fa-wallet text-[#E52229]"></i> <span data-translate="reports-title">কোষাধ্যক্ষের আয়-ব্যয় রিপোর্ট</span>
+                        </h2>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-400 font-medium tracking-wide mt-1" data-translate="reports-subtitle">
+                            হল ইউনিটের মে ২০২৬ থেকে শুরু হওয়া আয় ও ব্যয়ের মাসভিত্তিক লেজার হিসাব
+                        </p>
+                    </div>
+                    <!-- Treasurer Manage Trigger Button -->
+                    <button onclick="openTreasurerAuthModal()" class="w-full sm:w-auto bg-[#E52229] hover:bg-[#c91d23] text-white text-[11px] font-bold px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span data-translate="reports-manage-btn">হিসাব পরিচালনা</span>
+                    </button>
+                </div>
+
+                <!-- Dynamic Yearly Reports (Hidden by default, shown when 1 year complete) -->
+                <div id="yearly-reports-section" class="hidden space-y-3 mb-6">
+                    <div class="border-l-4 border-rose-600 pl-3">
+                        <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200" data-translate="reports-yearly-title">বাৎসরিক হিসাব বিবরণী (Annual Reports)</h3>
+                        <p class="text-[9px] text-slate-400" data-translate="reports-yearly-subtitle">পুরো বছরের আয় ও ব্যয়ের সংকলিত বাৎসরিক রিপোর্ট</p>
+                    </div>
+                    <div id="yearly-accordion-container" class="space-y-2">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+
+                <!-- Dynamic Month-wise Accordions Container -->
+                <div class="space-y-3" id="treasurer-accordion">
+                    <!-- Dynamically populated via JS -->
+                </div>
+
             </div>
 
         </section>
@@ -777,6 +956,55 @@
     </div>
 
     <!-- 2. JOIN AS DONOR MODAL REMOVED -->
+
+    
+    <!-- ==========================================
+         TREASURER AUTH MODAL (Modern Clean Login)
+         ========================================== -->
+    <div id="treasurer-auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 animate-tab-fade">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-slate-200/60 dark:border-slate-700/60">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700/60">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-rose-50 dark:bg-rose-950/30 text-[#E52229] flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-900 dark:text-slate-100" data-translate="rep-auth-title">কোষাধ্যক্ষ প্যানেল প্রবেশাধিকার</h3>
+                        <p class="text-[9px] text-slate-400 dark:text-slate-500">সুরক্ষিত অ্যাডমিন অ্যাক্সেস</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('treasurer-auth-modal')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg text-xs cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <p class="text-[11px] text-slate-600 dark:text-slate-300" data-translate="rep-auth-desc">
+                হিসাব পরিচালনা করতে কোষাধ্যক্ষ প্যানেলের পাসওয়ার্ড প্রদান করুন:
+            </p>
+            
+            <form onsubmit="submitTreasurerAuth(event)" class="space-y-3">
+                <div class="relative">
+                    <input type="password" id="treasurer-auth-password" class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-rose-500 transition pr-9" placeholder="পাসওয়ার্ড লিখুন..." data-translate-placeholder="rep-auth-placeholder" required autofocus>
+                    <button type="button" onclick="toggleAuthPasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs cursor-pointer">
+                        <i id="auth-pwd-eye" class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+
+                <div id="treasurer-auth-error" class="hidden text-[10px] text-rose-500 font-bold flex items-center gap-1.5" data-translate="rep-auth-wrong">
+                    <i class="fa-solid fa-triangle-exclamation"></i> ভুল পাসওয়ার্ড! অ্যাক্সেস প্রত্যাখ্যাত। ⚠️
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                    <button type="button" onclick="closeModal('treasurer-auth-modal')" class="flex-1 py-2 text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl transition cursor-pointer" data-translate="rep-auth-cancel">
+                        বাতিল
+                    </button>
+                    <button type="submit" class="flex-1 py-2 text-xs font-bold text-white bg-[#E52229] hover:bg-[#c91d23] rounded-xl transition shadow-xs cursor-pointer" data-translate="rep-auth-submit">
+                        প্রবেশ করুন
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- 4. TREASURER MANAGEMENT MODAL -->
     <div id="treasurer-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 hidden items-end md:items-center justify-center p-0 md:p-4">
@@ -1113,6 +1341,32 @@
                 'reports-manage-btn': 'হিসাব পরিচালনা',
                 'reports-yearly-title': 'বাৎসরিক হিসাব বিবরণী (Annual Reports)',
                 'reports-yearly-subtitle': 'পুরো বছরের আয় ও ব্যয়ের সংকলিত বাৎসরিক রিপোর্ট',
+                // Organizational & Enhanced Reports
+                'rep-subtab-org': 'সাংগঠনিক রিপোর্ট',
+                'rep-subtab-treasurer': 'কোষাধ্যক্ষের রিপোর্ট',
+                'rep-sync-live': 'লাইভ ডাটাবেস সিঙ্কড',
+                'rep-org-badge': 'সাংগঠনিক প্রতিবেদন',
+                'rep-org-title': 'ইউনিট সাংগঠনিক প্রতিবেদন ও রক্তদাতা পরিসংখ্যান',
+                'rep-org-subtitle': 'শহীদ রফিক-জব্বার হল ইউনিটের বর্তমান সাংগঠনিক অবস্থান, রক্তদাতা সক্রিয়তা ও গ্রুপভিত্তিক পূর্ণাঙ্গ বিবরণ',
+                'rep-org-download-btn': 'অফিসিয়াল রিপোর্ট ডাউনলোড (PDF)',
+                'rep-metric-total': 'মোট শিক্ষার্থী সংখ্যা',
+                'rep-metric-willing': 'রক্তদানে আগ্রহী রক্তদাতা',
+                'rep-metric-donations': 'সর্বমোট সম্পন্ন রক্তদান',
+                'rep-metric-ready': 'তাৎক্ষণিক প্রস্তুত রক্তদাতা',
+                'rep-metric-ready-desc': '৩+ মাস অতিক্রান্ত ও ইচ্ছুক',
+                'rep-bg-matrix-title': 'রক্তের গ্রুপভিত্তিক পরিসংখ্যান ও প্রাপ্যতা',
+                'rep-bg-matrix-sub': 'প্রতিটি রক্তের গ্রুপের মোট সদস্য, আগ্রহী ডোনার এবং এ পর্যন্ত সম্পন্ন রক্তদানের সংখ্যা',
+                'rep-batch-matrix-title': 'ব্যাচভিত্তিক সক্রিয়তা ও অংশগ্রহণ',
+                'rep-batch-matrix-sub': 'বিভিন্ন ব্যাচের আবাসিক শিক্ষার্থীদের রক্তদানে সক্রিয়তার সার্বিক তথ্য',
+                'rep-dept-matrix-title': 'বিভাগভিত্তিক রক্তদাতা বিন্যাস (শীর্ষ বিভাগসমূহ)',
+                'rep-org-goals-title': 'হল ইউনিটের সাংগঠনিক লক্ষ্য ও অঙ্গীকার',
+                'rep-auth-title': 'কোষাধ্যক্ষ প্যানেল প্রবেশাধিকার',
+                'rep-auth-desc': 'হিসাব পরিচালনা করতে কোষাধ্যক্ষ প্যানেলের পাসওয়ার্ড প্রদান করুন:',
+                'rep-auth-placeholder': 'পাসওয়ার্ড লিখুন...',
+                'rep-auth-submit': 'প্রবেশ করুন',
+                'rep-auth-cancel': 'বাতিল',
+                'rep-auth-wrong': 'ভুল পাসওয়ার্ড! অ্যাক্সেস প্রত্যাখ্যাত। ⚠️',
+
                 'footer-title': 'বাঁধন, শহীদ রফিক-জব্বার হল ইউনিট',
                 'footer-addr': 'জাহাঙ্গীরনগর বিশ্ববিদ্যালয়, সাভার, ঢাকা।',
                 
@@ -1211,6 +1465,32 @@
                 'reports-manage-btn': 'Manage Ledger',
                 'reports-yearly-title': 'Annual Reports',
                 'reports-yearly-subtitle': 'Compiled annual income and expense report',
+                // Organizational & Enhanced Reports
+                'rep-subtab-org': 'Organizational Report',
+                'rep-subtab-treasurer': 'Treasurer\'s Report',
+                'rep-sync-live': 'Live Database Synced',
+                'rep-org-badge': 'Organizational Report',
+                'rep-org-title': 'Unit Organizational Report & Donor Statistics',
+                'rep-org-subtitle': 'Comprehensive donor statistics, batch-wise activity, and organizational standing of Shahid Rafiq-Jabbar Hall Unit',
+                'rep-org-download-btn': 'Download Official Report (PDF)',
+                'rep-metric-total': 'Total Registered Students',
+                'rep-metric-willing': 'Willing Blood Donors',
+                'rep-metric-donations': 'Total Donations Completed',
+                'rep-metric-ready': 'Immediately Eligible Donors',
+                'rep-metric-ready-desc': 'Eligible (3+ months) & willing',
+                'rep-bg-matrix-title': 'Blood Group Matrix & Availability',
+                'rep-bg-matrix-sub': 'Total members, willing donors, and donations completed per blood group',
+                'rep-batch-matrix-title': 'Batch-wise Engagement & Distribution',
+                'rep-batch-matrix-sub': 'Engagement and donor participation broken down by student batch',
+                'rep-dept-matrix-title': 'Top Departments by Donor Count',
+                'rep-org-goals-title': 'Unit Organizational Objectives & Commitments',
+                'rep-auth-title': 'Treasurer Authentication',
+                'rep-auth-desc': 'Enter treasurer password to manage financial ledger:',
+                'rep-auth-placeholder': 'Enter password...',
+                'rep-auth-submit': 'Access Panel',
+                'rep-auth-cancel': 'Cancel',
+                'rep-auth-wrong': 'Wrong password! Access denied. ⚠️',
+
                 'footer-title': 'Badhan, Shahid Rafiq-Jabbar Hall Unit',
                 'footer-addr': 'Jahangirnagar University, Savar, Dhaka.',
                 
@@ -1303,6 +1583,7 @@
             filterDonors();
             renderCommittee();
             renderTreasurerReports();
+            renderOrganizationalReports();
         }
 
         function toggleLanguage() {
@@ -1447,6 +1728,7 @@
                 updateMetrics();
                 filterDonors();
                 renderCommittee();
+                renderOrganizationalReports();
 
                 // Subscribe to real-time events on the 'donors' collection
                 pb.collection('donors').subscribe('*', function (e) {
@@ -1558,6 +1840,7 @@
             updateMetrics();
             filterDonors();
             renderCommittee();
+            renderOrganizationalReports();
         }
 
         // ==========================================
@@ -1629,24 +1912,23 @@
             const panelTreasurer = document.getElementById('reports-treasurer-panel');
             const panelExecutive = document.getElementById('reports-executive-panel');
 
+            if (!btnTreasurer || !btnExecutive || !panelTreasurer || !panelExecutive) return;
+
             if (catId === 'treasurer') {
-                btnTreasurer.classList.add('border-[#E52229]', 'text-[#E52229]');
-                btnTreasurer.classList.remove('border-transparent', 'text-slate-400');
-                
-                btnExecutive.classList.add('border-transparent', 'text-slate-400');
-                btnExecutive.classList.remove('border-[#E52229]', 'text-[#E52229]');
+                btnTreasurer.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-white dark:bg-slate-700 text-[#E52229] shadow-xs cursor-pointer";
+                btnExecutive.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer";
 
                 panelTreasurer.classList.remove('hidden');
                 panelExecutive.classList.add('hidden');
+                renderTreasurerReports();
+                renderYearlyReports();
             } else {
-                btnExecutive.classList.add('border-[#E52229]', 'text-[#E52229]');
-                btnExecutive.classList.remove('border-transparent', 'text-slate-400');
-
-                btnTreasurer.classList.add('border-transparent', 'text-slate-400');
-                btnTreasurer.classList.remove('border-[#E52229]', 'text-[#E52229]');
+                btnExecutive.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-white dark:bg-slate-700 text-[#E52229] shadow-xs cursor-pointer";
+                btnTreasurer.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer";
 
                 panelExecutive.classList.remove('hidden');
                 panelTreasurer.classList.add('hidden');
+                renderOrganizationalReports();
             }
         }
 
@@ -1979,6 +2261,353 @@
         }
 
         // Render Treasurer Reports from Database
+        
+        // ==========================================
+        // ORGANIZATIONAL REPORTS & ANALYTICS ENGINE
+        // ==========================================
+        function renderOrganizationalReports() {
+            const totalEl = document.getElementById('org-stat-total');
+            if (!totalEl) return;
+
+            const totalStudents = donors.length;
+            const willingDonors = donors.filter(d => d.willing).length;
+            const totalDonations = donors.reduce((sum, d) => sum + (d.donorCount || 0), 0);
+            
+            // Ready donors: willing && eligible (at least 3 months passed or never donated)
+            const readyDonors = donors.filter(d => {
+                if (!d.willing) return false;
+                if (!d.lastDonation) return true;
+                const elig = checkEligibility(d.lastDonation);
+                return elig.eligible;
+            }).length;
+
+            const willingPct = totalStudents > 0 ? Math.round((willingDonors / totalStudents) * 100) : 0;
+
+            totalEl.innerText = currentLang === 'bn' ? `${translateNumber(totalStudents)} জন` : `${totalStudents}`;
+            document.getElementById('org-stat-willing').innerText = currentLang === 'bn' ? `${translateNumber(willingDonors)} জন` : `${willingDonors}`;
+            document.getElementById('org-stat-willing-pct').innerText = `${translateNumber(willingPct)}%`;
+            document.getElementById('org-stat-donations').innerText = currentLang === 'bn' ? `${translateNumber(totalDonations)} বার` : `${totalDonations} times`;
+            document.getElementById('org-stat-ready').innerText = currentLang === 'bn' ? `${translateNumber(readyDonors)} জন` : `${readyDonors}`;
+
+            // Render Blood Group Matrix
+            const bgGrid = document.getElementById('org-bg-grid');
+            if (bgGrid) {
+                bgGrid.innerHTML = '';
+                const standardGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+                
+                standardGroups.forEach(bg => {
+                    const groupDonors = donors.filter(d => d.bloodGroup === bg);
+                    const groupCount = groupDonors.length;
+                    const groupWilling = groupDonors.filter(d => d.willing).length;
+                    const groupDonations = groupDonors.reduce((sum, d) => sum + (d.donorCount || 0), 0);
+                    const groupPct = totalStudents > 0 ? ((groupCount / totalStudents) * 100).toFixed(1) : '0';
+                    const isRare = bg.endsWith('-');
+
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-50 dark:bg-slate-700/40 border border-slate-200/70 dark:border-slate-700/60 rounded-xl p-3 space-y-2 hover:border-rose-300 dark:hover:border-rose-900/60 transition group";
+                    
+                    const rareBadge = isRare 
+                        ? `<span class="text-[8px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">${currentLang === 'bn' ? 'দুর্লভ' : 'Rare'}</span>` 
+                        : '';
+
+                    const donorLabel = currentLang === 'bn' ? 'সদস্য' : 'Total';
+                    const willingLabel = currentLang === 'bn' ? 'ইচ্ছুক' : 'Willing';
+                    const donationsLabel = currentLang === 'bn' ? 'দান' : 'Given';
+
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-black text-[#E52229] dark:text-rose-400 group-hover:scale-105 transition-transform">${bg}</span>
+                            ${rareBadge}
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex items-baseline justify-between text-[11px]">
+                                <span class="font-extrabold text-slate-800 dark:text-slate-100">${currentLang === 'bn' ? translateNumber(groupCount) : groupCount} <span class="text-[9px] font-normal text-slate-400">${donorLabel}</span></span>
+                                <span class="text-[9px] font-bold text-slate-400 dark:text-slate-400">${translateNumber(groupPct)}%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 dark:bg-slate-600 h-1 rounded-full overflow-hidden">
+                                <div class="bg-[#E52229] h-full rounded-full transition-all" style="width: ${Math.min(100, Math.max(0, groupPct * 3))}%"></div>
+                            </div>
+                        </div>
+                        <div class="pt-1 border-t border-slate-200/50 dark:border-slate-600/50 flex items-center justify-between text-[9px] text-slate-500 dark:text-slate-400">
+                            <span><i class="fa-solid fa-heart text-rose-500 text-[8px] mr-0.5"></i> ${currentLang === 'bn' ? translateNumber(groupWilling) : groupWilling} ${willingLabel}</span>
+                            <span><i class="fa-solid fa-droplet text-rose-500 text-[8px] mr-0.5"></i> ${currentLang === 'bn' ? translateNumber(groupDonations) : groupDonations} ${donationsLabel}</span>
+                        </div>
+                    `;
+                    bgGrid.appendChild(card);
+                });
+            }
+
+            // Render Batch Analysis Table
+            const batchContainer = document.getElementById('org-batch-table-container');
+            if (batchContainer) {
+                // Find all unique batches
+                const batchMap = {};
+                donors.forEach(d => {
+                    const b = (d.session || '54').toString().trim();
+                    if (!b) return;
+                    if (!batchMap[b]) {
+                        batchMap[b] = { count: 0, willing: 0, donations: 0, updated: 0 };
+                    }
+                    batchMap[b].count++;
+                    if (d.willing) batchMap[b].willing++;
+                    batchMap[b].donations += (d.donorCount || 0);
+                    if (isStudentProfileUpdated(d)) batchMap[b].updated++;
+                });
+
+                const sortedBatches = Object.keys(batchMap).sort().reverse();
+
+                let tableHtml = `
+                    <table class="w-full text-left border-collapse text-[11px]">
+                        <thead>
+                            <tr class="border-b border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-400 text-[9px] uppercase font-bold">
+                                <th class="py-2 px-2">${currentLang === 'bn' ? 'ব্যাচ' : 'Batch'}</th>
+                                <th class="py-2 px-2 text-right">${currentLang === 'bn' ? 'শিক্ষার্থী' : 'Students'}</th>
+                                <th class="py-2 px-2 text-right">${currentLang === 'bn' ? 'প্রোফাইল আপ' : 'Updated'}</th>
+                                <th class="py-2 px-2 text-right">${currentLang === 'bn' ? 'ইচ্ছুক ডোনার' : 'Willing'}</th>
+                                <th class="py-2 px-2 text-right">${currentLang === 'bn' ? 'রক্তদান' : 'Donations'}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                `;
+
+                sortedBatches.forEach(b => {
+                    const data = batchMap[b];
+                    const batchTitle = currentLang === 'bn' ? `${translateNumber(b)}তম ব্যাচ` : `${b}th Batch`;
+                    tableHtml += `
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
+                            <td class="py-2 px-2 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#E52229]"></span>
+                                ${batchTitle}
+                            </td>
+                            <td class="py-2 px-2 text-right font-semibold text-slate-700 dark:text-slate-300">${currentLang === 'bn' ? translateNumber(data.count) : data.count}</td>
+                            <td class="py-2 px-2 text-right font-semibold text-blue-600 dark:text-blue-400">${currentLang === 'bn' ? translateNumber(data.updated) : data.updated}</td>
+                            <td class="py-2 px-2 text-right font-bold text-[#E52229] dark:text-rose-400">${currentLang === 'bn' ? translateNumber(data.willing) : data.willing}</td>
+                            <td class="py-2 px-2 text-right font-bold text-emerald-600 dark:text-emerald-400">${currentLang === 'bn' ? translateNumber(data.donations) : data.donations}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHtml += `</tbody></table>`;
+                batchContainer.innerHTML = tableHtml;
+            }
+
+            // Render Top Departments
+            const deptContainer = document.getElementById('org-dept-table-container');
+            if (deptContainer) {
+                const deptMap = {};
+                donors.forEach(d => {
+                    const dept = (d.department || 'সাধারণ').trim();
+                    deptMap[dept] = (deptMap[dept] || 0) + 1;
+                });
+
+                const sortedDepts = Object.entries(deptMap)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+
+                let deptsHtml = '';
+                const maxDeptCount = sortedDepts.length > 0 ? sortedDepts[0][1] : 1;
+
+                sortedDepts.forEach(([dept, count], idx) => {
+                    const deptTitle = translateDept(dept);
+                    const pct = Math.round((count / maxDeptCount) * 100);
+                    deptsHtml += `
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between text-[10px]">
+                                <span class="font-bold text-slate-700 dark:text-slate-300 truncate max-w-[200px]">
+                                    <span class="text-slate-400 text-[9px] mr-1">#${idx+1}</span> ${deptTitle}
+                                </span>
+                                <span class="font-extrabold text-slate-800 dark:text-slate-200">
+                                    ${currentLang === 'bn' ? translateNumber(count) : count} ${currentLang === 'bn' ? 'জন' : ''}
+                                </span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-rose-500 to-[#E52229] h-full rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                deptContainer.innerHTML = deptsHtml;
+            }
+        }
+
+        // ==========================================
+        // DOWNLOAD OFFICIAL ORGANIZATIONAL REPORT (PDF)
+        // ==========================================
+        function downloadOrganizationalPDF() {
+            const totalStudents = donors.length;
+            const willingDonors = donors.filter(d => d.willing).length;
+            const totalDonations = donors.reduce((sum, d) => sum + (d.donorCount || 0), 0);
+            const readyDonors = donors.filter(d => {
+                if (!d.willing) return false;
+                if (!d.lastDonation) return true;
+                return checkEligibility(d.lastDonation).eligible;
+            }).length;
+
+            const printContainer = document.createElement('div');
+            printContainer.style.padding = '35px';
+            printContainer.style.fontFamily = "'Hind Siliguri', 'Inter', sans-serif";
+            printContainer.style.color = '#1e293b';
+            printContainer.style.backgroundColor = '#ffffff';
+
+            const today = new Date().toLocaleDateString(currentLang === 'bn' ? 'bn-BD' : 'en-US', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+            // Group matrix rows
+            const standardGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+            const bgRows = standardGroups.map(bg => {
+                const groupDonors = donors.filter(d => d.bloodGroup === bg);
+                const gCount = groupDonors.length;
+                const gWilling = groupDonors.filter(d => d.willing).length;
+                const gDonations = groupDonors.reduce((sum, d) => sum + (d.donorCount || 0), 0);
+                const gPct = totalStudents > 0 ? ((gCount / totalStudents) * 100).toFixed(1) : '0';
+                
+                return `
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 7px 10px; font-weight: bold; color: #E52229;">${bg}</td>
+                        <td style="padding: 7px 10px; text-align: right;">${currentLang === 'bn' ? translateNumber(gCount) : gCount}</td>
+                        <td style="padding: 7px 10px; text-align: right; color: #0284c7;">${currentLang === 'bn' ? translateNumber(gWilling) : gWilling}</td>
+                        <td style="padding: 7px 10px; text-align: right; color: #10b981;">${currentLang === 'bn' ? translateNumber(gDonations) : gDonations}</td>
+                        <td style="padding: 7px 10px; text-align: right; font-weight: bold;">${translateNumber(gPct)}%</td>
+                    </tr>
+                `;
+            }).join('');
+
+            printContainer.innerHTML = `
+                <div style="border-bottom: 3px solid #E52229; padding-bottom: 15px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h1 style="font-size: 20px; font-weight: 800; color: #E52229; margin: 0;">বাঁধন</h1>
+                            <p style="font-size: 13px; font-weight: bold; color: #0f172a; margin: 2px 0 0 0;">শহীদ রফিক-জব্বার হল ইউনিট</p>
+                            <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">জাহাঙ্গীরনগর বিশ্ববিদ্যালয়, সাভার, ঢাকা।</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="display: inline-block; background-color: #ffe4e6; color: #E52229; font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 999px;">অফিসিয়াল সাংগঠনিক প্রতিবেদন</span>
+                            <p style="font-size: 10px; color: #64748b; margin: 5px 0 0 0;">তারিখ: ${today}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 13px; font-weight: bold; color: #0f172a; margin: 0 0 10px 0; border-left: 3px solid #E52229; padding-left: 8px;">১. মূল সাংগঠনিক পরিসংখ্যান</h2>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+                        <tr>
+                            <td style="padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold;">মোট আবাসিক শিক্ষার্থী:</td>
+                            <td style="padding: 8px 12px; border: 1px solid #e2e8f0;">${currentLang === 'bn' ? translateNumber(totalStudents) : totalStudents} জন</td>
+                            <td style="padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold;">রক্তদানে আগ্রহী রক্তদাতা:</td>
+                            <td style="padding: 8px 12px; border: 1px solid #e2e8f0; color: #E52229; font-weight: bold;">${currentLang === 'bn' ? translateNumber(willingDonors) : willingDonors} জন</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold;">সর্বমোট সম্পন্ন রক্তদান:</td>
+                            <td style="padding: 8px 12px; border: 1px solid #e2e8f0; color: #10b981; font-weight: bold;">${currentLang === 'bn' ? translateNumber(totalDonations) : totalDonations} বার</td>
+                            <td style="padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold;">তাৎক্ষণিক প্রস্তুত রক্তদাতা:</td>
+                            <td style="padding: 8px 12px; border: 1px solid #e2e8f0; color: #0284c7; font-weight: bold;">${currentLang === 'bn' ? translateNumber(readyDonors) : readyDonors} জন</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 13px; font-weight: bold; color: #0f172a; margin: 0 0 10px 0; border-left: 3px solid #E52229; padding-left: 8px;">২. রক্তের গ্রুপভিত্তিক বিন্যাস ও প্রাপ্যতা</h2>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #cbd5e1; font-weight: bold; color: #475569;">
+                                <th style="padding: 8px 10px; text-align: left;">রক্তের গ্রুপ</th>
+                                <th style="padding: 8px 10px; text-align: right;">মোট সদস্য</th>
+                                <th style="padding: 8px 10px; text-align: right;">ইচ্ছুক রক্তদাতা</th>
+                                <th style="padding: 8px 10px; text-align: right;">রক্তদানের সংখ্যা</th>
+                                <th style="padding: 8px 10px; text-align: right;">শতকরা হার</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${bgRows}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px dashed #cbd5e1; display: flex; justify-content: space-between; font-size: 10px; color: #64748b;">
+                    <div style="text-align: center; width: 140px;">
+                        <div style="border-bottom: 1px solid #94a3b8; height: 35px; margin-bottom: 5px;"></div>
+                        <p style="margin: 0; font-weight: bold;">কোষাধ্যক্ষ</p>
+                        <p style="margin: 0;">শহীদ রফিক-জব্বার হল ইউনিট</p>
+                    </div>
+                    <div style="text-align: center; width: 140px;">
+                        <div style="border-bottom: 1px solid #94a3b8; height: 35px; margin-bottom: 5px;"></div>
+                        <p style="margin: 0; font-weight: bold;">সাংগঠনিক সম্পাদক</p>
+                        <p style="margin: 0;">শহীদ রফিক-জব্বার হল ইউনিট</p>
+                    </div>
+                    <div style="text-align: center; width: 140px;">
+                        <div style="border-bottom: 1px solid #94a3b8; height: 35px; margin-bottom: 5px;"></div>
+                        <p style="margin: 0; font-weight: bold;">সভাপতি / ইউনিট ইনচার্জ</p>
+                        <p style="margin: 0;">শহীদ রফিক-জব্বার হল ইউনিট</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 25px; font-size: 9px; color: #94a3b8;">
+                    "একের রক্ত অন্যের জীবন, রক্তই হোক আত্মার বাঁধন" • badhansrj.duckdns.org
+                </div>
+            `;
+
+            const opt = {
+                margin: 8,
+                filename: `Badhan_SRJ_Organizational_Report_${new Date().toISOString().substring(0, 10)}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            const toastMsg = currentLang === 'bn' 
+                ? "সাংগঠনিক রিপোর্ট PDF ডাউনলোড শুরু হয়েছে! 📥" 
+                : "Organizational Report PDF download has started! 📥";
+            triggerToast(toastMsg);
+            html2pdf().from(printContainer).set(opt).save();
+        }
+
+        // ==========================================
+        // TREASURER AUTH MODAL CONTROLLERS
+        // ==========================================
+        function openTreasurerAuthModal() {
+            const pwdInput = document.getElementById('treasurer-auth-password');
+            const errEl = document.getElementById('treasurer-auth-error');
+            if (pwdInput) pwdInput.value = '';
+            if (errEl) errEl.classList.add('hidden');
+            openModal('treasurer-auth-modal');
+        }
+
+        function toggleAuthPasswordVisibility() {
+            const pwdInput = document.getElementById('treasurer-auth-password');
+            const icon = document.getElementById('auth-pwd-eye');
+            if (!pwdInput || !icon) return;
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                pwdInput.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        function submitTreasurerAuth(e) {
+            e.preventDefault();
+            const pwd = document.getElementById('treasurer-auth-password').value;
+            const errEl = document.getElementById('treasurer-auth-error');
+            
+            if (pwd === 'badhansrj734') {
+                closeModal('treasurer-auth-modal');
+                openModal('treasurer-modal');
+                renderTxList();
+                const welcomeMsg = currentLang === 'bn' ? "স্বাগতম কোষাধ্যক্ষ! হিসাব প্যানেল উন্মুক্ত হয়েছে। ✅" : "Welcome Treasurer! Ledger unlocked. ✅";
+                triggerToast(welcomeMsg);
+            } else {
+                if (errEl) errEl.classList.remove('hidden');
+            }
+        }
+
+        // Backward compatible prompt handler (calls modern modal)
+        function promptTreasurerPassword() {
+            openTreasurerAuthModal();
+        }
+
         function renderTreasurerReports() {
             const accordion = document.getElementById('treasurer-accordion');
             if (!accordion) return;
@@ -1988,12 +2617,26 @@
 
             if (filteredTxs.length === 0) {
                 const noTxsMsg = currentLang === 'bn' 
-                    ? "মে ২০২৬ থেকে পরবর্তী কোনো হিসাব এখনো এন্ট্রি করা হয়নি।" 
-                    : "No ledger transactions have been entered since May 2026.";
+                    ? "মে ২০২৬ থেকে শুরু হওয়া ইউনিটের কোনো আয়-ব্যয় লেনদেন এখনো ডাটাবেসে এন্ট্রি করা হয়নি।" 
+                    : "No ledger transactions have been recorded starting from May 2026.";
+                const addFirstMsg = currentLang === 'bn'
+                    ? "নতুন লেনদেন এন্ট্রি করুন"
+                    : "Add First Transaction";
                 accordion.innerHTML = `
-                    <div class="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 p-8 space-y-2">
-                        <i class="fa-regular fa-folder-open text-lg text-slate-300"></i>
-                        <p class="text-xs text-slate-500">${noTxsMsg}</p>
+                    <div class="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 p-8 space-y-3 card-shadow">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/30 text-[#E52229] dark:text-rose-400 flex items-center justify-center mx-auto text-lg">
+                            <i class="fa-regular fa-folder-open"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200">${currentLang === 'bn' ? 'কোনো লেনদেন রেকর্ড পাওয়া যায়নি' : 'No Transactions Found'}</h4>
+                            <p class="text-[11px] text-slate-400 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">${noTxsMsg}</p>
+                        </div>
+                        <div class="pt-2">
+                            <button onclick="openTreasurerAuthModal()" class="inline-flex items-center gap-1.5 bg-[#E52229] hover:bg-[#c91d23] text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition shadow-xs cursor-pointer">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                                <span>${addFirstMsg}</span>
+                            </button>
+                        </div>
                     </div>
                 `;
                 return;
@@ -3179,6 +3822,7 @@
             initPocketBase();
             renderCommittee();
             renderTreasurerReports();
+            renderOrganizationalReports();
         };
     </script>
 </body>
